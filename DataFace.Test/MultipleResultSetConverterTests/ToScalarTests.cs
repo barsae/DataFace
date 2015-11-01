@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using NSubstitute;
+using DataFace.Core;
 
 namespace DataFace.Test.MultipleResultSetConverterTests {
     [TestClass]

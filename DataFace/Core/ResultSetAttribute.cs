@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataFace {
+namespace DataFace.Core {
     public class ResultSetAttribute : Attribute {
         public int Index { get; set; }
         public ResultSetType Type { get; set; }

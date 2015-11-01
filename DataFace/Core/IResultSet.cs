@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataFace {
-    public interface IDatabaseConnection {
-        ITransaction BeginTransaction();
+namespace DataFace.Core {
+    public interface IResultSet {
+        List<Column> GetColumns();
+        List<IRow> GetRows();
     }
 }

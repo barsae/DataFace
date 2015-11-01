@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataFace {
+namespace DataFace.Core {
     public class RowConverter {
         public RowType ConvertRowToObject<RowType>(List<Column> columns, IRow row) where RowType : new() {
             return (RowType)ConvertRowToObject(typeof(RowType), columns, row);

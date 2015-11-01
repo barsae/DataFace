@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataFace {
+namespace DataFace.Core {
     public static class IEnumerableExtensions {
         public static object ToListOfDynamicType<T>(this IEnumerable<T> sequence, Type type) {
             var castMethod = typeof(Enumerable).GetMethod("Cast").MakeGenericMethod(type);

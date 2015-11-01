@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace DataFace {
+namespace DataFace.Core {
     public class ResultSetConverter {
         private RowConverter converter;
 

@@ -39,22 +39,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseRepository.cs" />
-    <Compile Include="Column.cs" />
-    <Compile Include="DataFaceException.cs" />
-    <Compile Include="IDatabaseConnection.cs" />
-    <Compile Include="IEnumerableExtensions.cs" />
-    <Compile Include="ITransaction.cs" />
-    <Compile Include="MultipleResultSetConverter.cs" />
-    <Compile Include="RowConverter.cs" />
-    <Compile Include="ModelCreator.cs" />
-    <Compile Include="ResultSetConverter.cs" />
-    <Compile Include="IResultSet.cs" />
-    <Compile Include="IRow.cs" />
+    <Compile Include="Core\BaseRepository.cs" />
+    <Compile Include="Core\Column.cs" />
+    <Compile Include="Core\DataFaceException.cs" />
+    <Compile Include="Core\IDatabaseConnection.cs" />
+    <Compile Include="Core\IEnumerableExtensions.cs" />
+    <Compile Include="Core\ITransaction.cs" />
+    <Compile Include="Core\MultipleResultSetConverter.cs" />
+    <Compile Include="Core\RowConverter.cs" />
+    <Compile Include="Core\ModelCreator.cs" />
+    <Compile Include="Core\ResultSetConverter.cs" />
+    <Compile Include="Core\IResultSet.cs" />
+    <Compile Include="Core\IRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultSetAttribute.cs" />
-    <Compile Include="ResultSetType.cs" />
-    <Compile Include="ValueConverter.cs" />
+    <Compile Include="Core\ResultSetAttribute.cs" />
+    <Compile Include="Core\ResultSetType.cs" />
+    <Compile Include="Core\ValueConverter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

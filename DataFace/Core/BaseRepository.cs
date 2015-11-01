@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataFace {
+namespace DataFace.Core {
     public class BaseRepository {
         private IDatabaseConnection connection;
 
