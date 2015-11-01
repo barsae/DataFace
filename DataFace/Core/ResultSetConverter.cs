@@ -12,41 +12,41 @@ namespace DataFace.Core {
             converter = new RowConverter();
         }
 
-        public ScalarType ToScalar<ScalarType>(IResultSet resultSet) {
+        public ScalarType ToScalar<ScalarType>(ResultSet resultSet) {
             return (ScalarType)ToScalar(typeof(ScalarType), resultSet);
         }
 
-        public object ToScalar(Type scalarType, IResultSet resultSet) {
-            return resultSet.GetRows()
+        public object ToScalar(Type scalarType, ResultSet resultSet) {
+            return resultSet.Rows
                             .Single()
-                            .GetValues()
+                            .Values
                             .Single();
         }
 
-        public RowType ToSingleRow<RowType>(IResultSet resultSet) where RowType : new() {
+        public RowType ToSingleRow<RowType>(ResultSet resultSet) where RowType : new() {
             return (RowType)ToSingleRow(typeof(RowType), resultSet);
         }
 
-        public object ToSingleRow(Type rowType, IResultSet resultSet) {
-            return converter.ConvertRowToObject(rowType, resultSet.GetColumns(), resultSet.GetRows().Single());
+        public object ToSingleRow(Type rowType, ResultSet resultSet) {
+            return converter.ConvertRowToObject(rowType, resultSet.Columns, resultSet.Rows.Single());
         }
 
-        public RowType ToSingleOrDefaultRow<RowType>(IResultSet resultSet) where RowType : new() {
+        public RowType ToSingleOrDefaultRow<RowType>(ResultSet resultSet) where RowType : new() {
             return (RowType)ToSingleOrDefaultRow(typeof(RowType), resultSet);
         }
 
-        public object ToSingleOrDefaultRow(Type rowType, IResultSet resultSet) {
-            return converter.ConvertRowToObject(rowType, resultSet.GetColumns(), resultSet.GetRows().SingleOrDefault());
+        public object ToSingleOrDefaultRow(Type rowType, ResultSet resultSet) {
+            return converter.ConvertRowToObject(rowType, resultSet.Columns, resultSet.Rows.SingleOrDefault());
         }
 
-        public List<RowType> ToRows<RowType>(IResultSet resultSet) where RowType : new() {
+        public List<RowType> ToRows<RowType>(ResultSet resultSet) where RowType : new() {
             return (List<RowType>)ToRows(typeof(RowType), resultSet);
         }
 
-        public object ToRows(Type rowType, IResultSet resultSet) {
+        public object ToRows(Type rowType, ResultSet resultSet) {
             var binder = new RowConverter();
-            var columns = resultSet.GetColumns();
-            return resultSet.GetRows()
+            var columns = resultSet.Columns;
+            return resultSet.Rows
                             .Select(row => binder.ConvertRowToObject(rowType, columns, row))
                             .ToListOfDynamicType(rowType);
         }

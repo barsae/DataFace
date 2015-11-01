@@ -49,12 +49,14 @@
     <Compile Include="Core\RowConverter.cs" />
     <Compile Include="Core\ModelCreator.cs" />
     <Compile Include="Core\ResultSetConverter.cs" />
-    <Compile Include="Core\IResultSet.cs" />
-    <Compile Include="Core\IRow.cs" />
+    <Compile Include="Core\ResultSet.cs" />
+    <Compile Include="Core\Row.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\ResultSetAttribute.cs" />
     <Compile Include="Core\ResultSetType.cs" />
     <Compile Include="Core\ValueConverter.cs" />
+    <Compile Include="SqlServer\SqlServerDatabaseConnection.cs" />
+    <Compile Include="SqlServer\SqlServerTransaction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

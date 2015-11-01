@@ -9,7 +9,7 @@ namespace DataFace.Core {
             return (T)Convert.ChangeType(scalar, typeof(T));
         }
 
-        public object CreateFromRow(Column column, IRow row) {
+        public object CreateFromRow(Column column, Row row) {
             throw new NotImplementedException();
         }
     }

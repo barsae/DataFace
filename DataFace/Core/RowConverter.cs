@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace DataFace.Core {
     public class RowConverter {
-        public RowType ConvertRowToObject<RowType>(List<Column> columns, IRow row) where RowType : new() {
+        public RowType ConvertRowToObject<RowType>(List<Column> columns, Row row) where RowType : new() {
             return (RowType)ConvertRowToObject(typeof(RowType), columns, row);
         }
 
-        public object ConvertRowToObject(Type rowType, List<Column> columns, IRow row) {
+        public object ConvertRowToObject(Type rowType, List<Column> columns, Row row) {
             var result = Activator.CreateInstance(rowType);
-            var values = row.GetValues();
+            var values = row.Values;
 
             for (int ii = 0; ii < columns.Count; ii++) {
                 var propertyName = columns[ii].Name;

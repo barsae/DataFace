@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DataFace.Core {
     public interface ITransaction : IDisposable {
-        List<IResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters);
-        List<IResultSet> ExecuteAdHocQuery(string adhocQuery);
+        List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters);
+        List<ResultSet> ExecuteAdHocQuery(string adhocQuery);
     }
 }

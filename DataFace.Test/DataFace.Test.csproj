@@ -65,6 +65,12 @@
     <Compile Include="MultipleResultSetConverterTests\ToRowsTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\ToSingleRowTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlServerIntegrationTests\MultipleResultSetModel.cs" />
+    <Content Include="SqlServerIntegrationTests\CreateTestDatabase.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="SqlServerIntegrationTests\SqlServerTests.cs" />
+    <Compile Include="SqlServerIntegrationTests\SqlServerIntegrationRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

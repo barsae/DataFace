@@ -10,20 +10,14 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
     public class ToMultipleResultSetModelTests {
         [TestMethod]
         public void ToMultipleResultSetModel_ToScalar_Works() {
-            var resultSet = Substitute.For<IResultSet>();
-            var columns = new List<Column>() { new Column("Value") };
-            var row = Substitute.For<IRow>();
+            var resultSet = new ResultSet() {
+                Columns = new List<Column>() { new Column("Value") },
+                Rows = new List<Row>() {
+                    new Row(new List<object>() { 21 })
+                }
+            };
 
-            resultSet.GetColumns().Returns(columns);
-
-            resultSet.GetRows().Returns(new List<IRow>() {
-                row
-            });
-            row.GetValues().Returns(new List<object>() {
-                21
-            });
-
-            var converter = new MultipleResultSetConverter(new List<IResultSet>() {
+            var converter = new MultipleResultSetConverter(new List<ResultSet>() {
                 resultSet
             });
             var model = converter.ToMultipleResultSetModel<MultipleResultSet_Scalar_TestModel>();
@@ -33,19 +27,14 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
 
         [TestMethod]
         public void ToMultipleResultSetModel_ToSingleRow_Works() {
-            var resultSet = Substitute.For<IResultSet>();
-            var columns = new List<Column>() { new Column("Value") };
-            var row = Substitute.For<IRow>();
+            var resultSet = new ResultSet() {
+                Columns = new List<Column>() { new Column("Value") },
+                Rows = new List<Row>() {
+                    new Row(new List<object>() { 22 })
+                }
+            };
 
-            resultSet.GetColumns().Returns(columns);
-            resultSet.GetRows().Returns(new List<IRow>() {
-                row
-            });
-            row.GetValues().Returns(new List<object>() {
-                22
-            });
-
-            var converter = new MultipleResultSetConverter(new List<IResultSet>() {
+            var converter = new MultipleResultSetConverter(new List<ResultSet>() {
                 resultSet
             });
             var model = converter.ToMultipleResultSetModel<MultipleResultSet_SingleRow_TestModel>();
@@ -55,47 +44,37 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
 
         [TestMethod]
         public void ToMultipleResultSetModel_ToSingleOrDefaultRow_Works() {
-            var resultSet = Substitute.For<IResultSet>();
-            var columns = new List<Column>() { new Column("Value") };
-            var row = Substitute.For<IRow>();
+            var resultSet = new ResultSet() {
+                Columns = new List<Column>() { new Column("Value") },
+                Rows = new List<Row>() {
+                    new Row(new List<object>() { 23 })
+                }
+            };
 
-            resultSet.GetColumns().Returns(columns);
-            resultSet.GetRows().Returns(new List<IRow>() {
-                row
-            });
-            row.GetValues().Returns(new List<object>() {
-                22
-            });
-
-            var converter = new MultipleResultSetConverter(new List<IResultSet>() {
+            var converter = new MultipleResultSetConverter(new List<ResultSet>() {
                 resultSet
             });
             var model = converter.ToMultipleResultSetModel<MultipleResultSet_SingleOrDefaultRow_TestModel>();
 
-            Assert.AreEqual(22, model.SingleOrDefaultRow.Value);
+            Assert.AreEqual(23, model.SingleOrDefaultRow.Value);
         }
 
         [TestMethod]
         public void ToMultipleResultSetModel_ToRows_Works() {
-            var resultSet = Substitute.For<IResultSet>();
-            var columns = new List<Column>() { new Column("Value") };
-            var row = Substitute.For<IRow>();
+            var resultSet = new ResultSet() {
+                Columns = new List<Column>() { new Column("Value") },
+                Rows = new List<Row>() {
+                    new Row(new List<object>() { 24 })
+                }
+            };
 
-            resultSet.GetColumns().Returns(columns);
-            resultSet.GetRows().Returns(new List<IRow>() {
-                row
-            });
-            row.GetValues().Returns(new List<object>() {
-                22
-            });
-
-            var converter = new MultipleResultSetConverter(new List<IResultSet>() {
+            var converter = new MultipleResultSetConverter(new List<ResultSet>() {
                 resultSet
             });
             var model = converter.ToMultipleResultSetModel<MultipleResultSet_Rows_TestModel>();
 
             Assert.AreEqual(1, model.Rows.Count);
-            Assert.AreEqual(22, model.Rows[0].Value);
+            Assert.AreEqual(24, model.Rows[0].Value);
         }
     }
 }

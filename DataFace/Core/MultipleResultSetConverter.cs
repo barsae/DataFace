@@ -6,11 +6,11 @@ using System.Text;
 
 namespace DataFace.Core {
     public class MultipleResultSetConverter {
-        public List<IResultSet> ResultSets { get; set; }
+        public List<ResultSet> ResultSets { get; set; }
 
         private ResultSetConverter converter;
 
-        public MultipleResultSetConverter(List<IResultSet> resultSets) {
+        public MultipleResultSetConverter(List<ResultSet> resultSets) {
             this.ResultSets = resultSets;
             converter = new ResultSetConverter();
         }
@@ -47,7 +47,7 @@ namespace DataFace.Core {
             return model;
         }
 
-        private object ConvertResultSet(IResultSet resultSet, ResultSetType resultSetType, Type propertyType) {
+        private object ConvertResultSet(ResultSet resultSet, ResultSetType resultSetType, Type propertyType) {
             switch (resultSetType) {
                 case ResultSetType.Scalar: return converter.ToScalar(propertyType, resultSet);
                 case ResultSetType.SingleRow: return converter.ToSingleRow(propertyType, resultSet);

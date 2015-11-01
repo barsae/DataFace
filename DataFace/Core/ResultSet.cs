@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DataFace.Core {
-    public interface IResultSet {
-        List<Column> GetColumns();
-        List<IRow> GetRows();
+    public class ResultSet {
+        public List<Column> Columns { get; set; }
+        public List<Row> Rows { get; set; }
     }
 }

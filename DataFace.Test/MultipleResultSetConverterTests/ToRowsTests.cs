@@ -10,18 +10,14 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
     public class ToRowsTests {
         [TestMethod]
         public void ToRows_SingleRow_Works() {
-            var resultSet = Substitute.For<IResultSet>();
-            var columns = new List<Column>() { new Column("Value") };
-            var row = Substitute.For<IRow>();
-
-            resultSet.GetColumns()
-                     .Returns(columns);
-            resultSet.GetRows()
-                     .Returns(new List<IRow>() { row });
-            row.GetValues()
-               .Returns(new List<object>() { 42 });
+            var resultSet = new ResultSet() {
+                Columns = new List<Column>() { new Column("Value") },
+                Rows = new List<Row>() {
+                    new Row(new List<object>() { 42 })
+                }
+            };
             
-            var converter = new MultipleResultSetConverter(new List<IResultSet>() {
+            var converter = new MultipleResultSetConverter(new List<ResultSet>() {
                 resultSet
             });
             var model = converter.ToRows<ScalarTestModel>();
