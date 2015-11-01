@@ -1,0 +1,16 @@
+
+Process database queries into static C# models
+
+Integrates with
+    SQL Server
+    MySQL
+    PostgreSQL
+    SQLite
+
+Stored procedure calls
+Ad hoc queries
+Multiple result sets
+Scalar, single row, optional row, or regular result set handlers
+Repository helper
+Transactions
+
