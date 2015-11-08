@@ -24,7 +24,7 @@ namespace DataFace.SqlServer {
                     command.Connection = sqlConnection;
 
                     foreach (var parameter in parameters) {
-                        command.Parameters.Add(new SqlParameter(parameter.Key, parameters.Values));
+                        command.Parameters.Add(new SqlParameter(parameter.Key, parameter.Value));
                     }
 
                     using (var reader = command.ExecuteReader()) {

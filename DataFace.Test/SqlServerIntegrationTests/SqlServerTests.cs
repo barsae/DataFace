@@ -39,8 +39,17 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(model.ResultSet1[1].StringValue, "def");
             Assert.AreEqual(model.ResultSet1[0].DateTimeValue, new DateTime(2001, 2, 3));
             Assert.AreEqual(model.ResultSet1[1].DateTimeValue, new DateTime(2004, 5, 6));
-
         }
+
+        [TestMethod]
+        public void SqlServer_SprocWithParameter_Works() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            Assert.AreEqual(143, repo.SprocWithParameter(143));
+        }
+
 
         private IDatabaseConnection GetConnection() {
             var connectionString = "Server=localhost;Database=DataFaceIntegrationTests;Integrated Security=True;";

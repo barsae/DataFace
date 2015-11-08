@@ -22,3 +22,13 @@ AS BEGIN
     SELECT 'def', CAST('2004-05-06' AS DATETIME)
 END
 GO
+
+IF OBJECT_ID('ToMultipleResultSetModel') IS NOT NULL DROP PROCEDURE SprocWithParameter;
+GO
+
+CREATE PROCEDURE SprocWithParameter
+    @Parameter INT
+AS BEGIN
+    SELECT Parameter = @Parameter
+END
+GO
