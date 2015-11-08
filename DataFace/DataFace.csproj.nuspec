@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>DataFace</id>
+        <version>$version$</version>
+        <authors>Eric Barsalou</authors>
+        <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+        <projectUrl>https://github.com/barsae/DataFace</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <title>DataFace</title>
+        <description>An easy to use C# database interfacing library</description>
+        <copyright>Copyright 2015</copyright>
+        <tags>C# ORM</tags>
+    </metadata>
+</package>
