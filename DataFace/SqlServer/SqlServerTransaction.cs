@@ -8,49 +8,55 @@ using System.Text;
 
 namespace DataFace.SqlServer {
     public class SqlServerTransaction : ITransaction {
-        private SqlServerDatabaseConnection databaseConnection;
+        private SqlConnection connection;
+        private SqlTransaction transaction;
 
         public SqlServerTransaction(SqlServerDatabaseConnection databaseConnection) {
-            this.databaseConnection = databaseConnection;
+            this.connection = new SqlConnection(databaseConnection.ConnectionString);
+            this.connection.Open();
+            this.transaction = this.connection.BeginTransaction();
         }
 
         public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters) {
-            using (var sqlConnection = new SqlConnection(databaseConnection.ConnectionString)) {
-                sqlConnection.Open();
+            using (var command = new SqlCommand()) {
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = procedureName;
+                command.Connection = connection;
+                command.Transaction = transaction;
 
-                using (var command = new SqlCommand()) {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = procedureName;
-                    command.Connection = sqlConnection;
+                foreach (var parameter in parameters) {
+                    command.Parameters.Add(new SqlParameter(parameter.Key, parameter.Value));
+                }
 
-                    foreach (var parameter in parameters) {
-                        command.Parameters.Add(new SqlParameter(parameter.Key, parameter.Value));
-                    }
-
-                    using (var reader = command.ExecuteReader()) {
-                        return ConvertReaderToMultipleResultSet(reader);
-                    }
+                using (var reader = command.ExecuteReader()) {
+                    return ConvertReaderToMultipleResultSet(reader);
                 }
             }
         }
 
         public List<ResultSet> ExecuteAdHocQuery(string adhocQuery) {
-            using (var sqlConnection = new SqlConnection(databaseConnection.ConnectionString)) {
-                sqlConnection.Open();
+            using (var command = new SqlCommand()) {
+                command.CommandType = CommandType.Text;
+                command.CommandText = adhocQuery;
+                command.Connection = connection;
+                command.Transaction = transaction;
 
-                using (var command = new SqlCommand()) {
-                    command.CommandType = CommandType.Text;
-                    command.CommandText = adhocQuery;
-                    command.Connection = sqlConnection;
-
-                    using (var reader = command.ExecuteReader()) {
-                        return ConvertReaderToMultipleResultSet(reader);
-                    }
+                using (var reader = command.ExecuteReader()) {
+                    return ConvertReaderToMultipleResultSet(reader);
                 }
             }
         }
 
+        public void Commit() {
+            transaction.Commit();
+        }
+
+        public void Rollback() {
+            transaction.Rollback();
+        }
+
         public void Dispose() {
+            transaction.Dispose();
         }
 
         private List<ResultSet> ConvertReaderToMultipleResultSet(SqlDataReader reader) {

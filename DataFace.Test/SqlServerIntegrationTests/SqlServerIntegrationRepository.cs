@@ -21,5 +21,13 @@ namespace DataFace.Test.SqlServerIntegrationTests {
         public int SprocWithParameter(int parameter) {
             return ExecuteStoredProcedure(new object[] { parameter }).ToScalar<int>();
         }
+
+        public void SprocWithSideEffect() {
+            ExecuteStoredProcedure(new object[] {});
+        }
+
+        public int GetCountOfSideEffects() {
+            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+        }
     }
 }

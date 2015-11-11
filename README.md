@@ -1,5 +1,5 @@
 
-# DataFace: Easy Database Interfacing for C#
+# DataFace: Easy Database Interfacing for C# 
 
 DataFace helps your C# project have a clear and easy to manage database access layer.
 
@@ -42,7 +42,7 @@ In the above example, ```ScalarExample```, ```RowsExample```, and ```MultipleRes
 
 ### Usage
 
-* Install DataFace as a [nuget package](https://www.nuget.org/packages/DataFace/) onto your solution.
+* Install DataFace as a [nuget package](https://www.nuget.org/packages/DataFace/) onto your solution
 * Create a repository model inheriting from DataFace.Core.BaseRepository
 * In the constructor, choose which IDatabaseConnection to use (only SQL Server is supported for now)
 * Fill out your model with stored procedures as methods of the repository.  Use ToRows, ToSingleRow, and other helper methods to process your database results.

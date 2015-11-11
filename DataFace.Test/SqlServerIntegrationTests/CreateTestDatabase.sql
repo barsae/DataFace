@@ -32,3 +32,34 @@ AS BEGIN
     SELECT Parameter = @Parameter
 END
 GO
+
+IF OBJECT_ID('CountOfSideEffects') IS NOT NULL DROP TABLE CountOfSideEffects;
+GO
+
+CREATE TABLE CountOfSideEffects (
+    CountOfSideEffects INT NOT NULL
+);
+GO
+
+INSERT INTO CountOfSideEffects VALUES (0);
+GO
+
+IF OBJECT_ID('SprocWithSideEffect') IS NOT NULL DROP PROCEDURE SprocWithSideEffect;
+GO
+
+CREATE PROCEDURE SprocWithSideEffect
+AS BEGIN
+    UPDATE CountOfSideEffects
+    SET CountOfSideEffects = CountOfSideEffects + 1
+END
+GO
+
+IF OBJECT_ID('GetCountOfSideEffects') IS NOT NULL DROP PROCEDURE GetCountOfSideEffects;
+GO
+
+CREATE PROCEDURE GetCountOfSideEffects
+AS BEGIN
+    SELECT CountOfSideEffects
+    FROM CountOfSideEffects
+END
+GO

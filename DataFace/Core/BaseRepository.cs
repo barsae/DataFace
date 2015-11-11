@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace DataFace.Core {
     public class BaseRepository {
         private IDatabaseConnection connection;
+        private TransactionContext transactionContext;
 
         public BaseRepository(IDatabaseConnection connection) {
             this.connection = connection;
@@ -16,8 +17,25 @@ namespace DataFace.Core {
 
         public MultipleResultSetConverter ExecuteStoredProcedure(object[] rawParameters, [CallerMemberName]string sprocName = "") {
             var parameters = GetParameters(sprocName, rawParameters);
-            using (var transaction = connection.BeginTransaction()) {
+            return WithTransaction((transaction) => {
                 return new MultipleResultSetConverter(transaction.ExecuteStoredProcedure(sprocName, parameters));
+            });
+        }
+
+        public TransactionContext WithTransaction() {
+            transactionContext = new TransactionContext(this, connection.BeginTransaction());
+            return transactionContext;
+        }
+
+        private ReturnType WithTransaction<ReturnType>(Func<ITransaction, ReturnType> func) {
+            if (transactionContext != null) {
+                return func(transactionContext.Transaction);
+            } else {
+                using (var transaction = connection.BeginTransaction()) {
+                    var result = func(transaction);
+                    transaction.Commit();
+                    return result;
+                }
             }
         }
 
@@ -26,6 +44,30 @@ namespace DataFace.Core {
                             .GetParameters()
                             .Zip(rawParameters, (param, value) => new KeyValuePair<string, object>(param.Name, value))
                             .ToDictionary((kvp) => kvp.Key, (kvp) => kvp.Value);
+        }
+
+        public class TransactionContext : IDisposable {
+            public ITransaction Transaction { get; private set; }
+
+            private BaseRepository repository;
+
+            public TransactionContext(BaseRepository repository, ITransaction transaction) {
+                this.Transaction = transaction;
+                this.repository = repository;
+            }
+
+            public void Commit() {
+                Transaction.Commit();
+            }
+
+            public void Rollback() {
+                Transaction.Rollback();
+            }
+
+            public void Dispose() {
+                Transaction.Dispose();
+                repository.transactionContext = null;
+            }
         }
     }
 }

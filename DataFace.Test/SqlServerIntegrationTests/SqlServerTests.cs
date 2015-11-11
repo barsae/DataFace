@@ -50,6 +50,33 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(143, repo.SprocWithParameter(143));
         }
 
+        [TestMethod]
+        public void SqlServer_CommitTransaction_HasSideEffect() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            using (var transaction = repo.WithTransaction()) {
+                repo.SprocWithSideEffect();
+                transaction.Commit();
+            }
+
+            Assert.AreEqual(1, repo.GetCountOfSideEffects());
+        }
+
+        [TestMethod]
+        public void SqlServer_RollbackTransaction_DoesntHaveSideEffect() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            using (var transaction = repo.WithTransaction()) {
+                repo.SprocWithSideEffect();
+                transaction.Rollback();
+            }
+
+            Assert.AreEqual(0, repo.GetCountOfSideEffects());
+        }
 
         private IDatabaseConnection GetConnection() {
             var connectionString = "Server=localhost;Database=DataFaceIntegrationTests;Integrated Security=True;";
@@ -66,6 +93,8 @@ namespace DataFace.Test.SqlServerIntegrationTests {
                         transaction.ExecuteAdHocQuery(batch);
                     }
                 }
+
+                transaction.Commit();
             }
         }
 
