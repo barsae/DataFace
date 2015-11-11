@@ -63,3 +63,18 @@ AS BEGIN
     FROM CountOfSideEffects
 END
 GO
+
+IF OBJECT_ID('testschema.SprocWithSchema') IS NOT NULL DROP PROCEDURE testschema.SprocWithSchema;
+GO
+
+IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'testschema') DROP SCHEMA testschema;
+GO
+
+CREATE SCHEMA testschema;
+GO
+
+CREATE PROCEDURE testschema.SprocWithSchema
+AS BEGIN
+    SELECT 123
+END
+GO

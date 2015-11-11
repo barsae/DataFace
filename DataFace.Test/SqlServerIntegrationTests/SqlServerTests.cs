@@ -78,6 +78,16 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(0, repo.GetCountOfSideEffects());
         }
 
+        [TestMethod]
+        public void SqlServer_SprocWithSchema_Works() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            Assert.AreEqual(123, repo.SprocWithSchema());
+        }
+
+
         private IDatabaseConnection GetConnection() {
             var connectionString = "Server=localhost;Database=DataFaceIntegrationTests;Integrated Security=True;";
             if (connectionString != "Server=localhost;Database=DataFaceIntegrationTests;Integrated Security=True;") {

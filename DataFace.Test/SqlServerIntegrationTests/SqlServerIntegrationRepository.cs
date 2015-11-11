@@ -29,5 +29,10 @@ namespace DataFace.Test.SqlServerIntegrationTests {
         public int GetCountOfSideEffects() {
             return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
         }
+
+        [Schema("testschema")]
+        public int SprocWithSchema() {
+            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+        }
     }
 }

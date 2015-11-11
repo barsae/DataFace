@@ -17,8 +17,9 @@ namespace DataFace.Core {
 
         public MultipleResultSetConverter ExecuteStoredProcedure(object[] rawParameters, [CallerMemberName]string sprocName = "") {
             var parameters = GetParameters(sprocName, rawParameters);
+            var schemaPrefix = GetSchemaPrefix(sprocName);
             return WithTransaction((transaction) => {
-                return new MultipleResultSetConverter(transaction.ExecuteStoredProcedure(sprocName, parameters));
+                return new MultipleResultSetConverter(transaction.ExecuteStoredProcedure(schemaPrefix + sprocName, parameters));
             });
         }
 
@@ -45,6 +46,17 @@ namespace DataFace.Core {
                             .Zip(rawParameters, (param, value) => new KeyValuePair<string, object>(param.Name, value))
                             .ToDictionary((kvp) => kvp.Key, (kvp) => kvp.Value);
         }
+
+        private string GetSchemaPrefix(string sprocName) {
+            var schemaAttribute = (SchemaAttribute)GetType().GetMethod(sprocName)
+                                                            .GetCustomAttributes(typeof(SchemaAttribute), false)
+                                                            .FirstOrDefault();
+            if (schemaAttribute != null) {
+                return schemaAttribute.Schema + ".";
+            }
+            return "";
+        }
+
 
         public class TransactionContext : IDisposable {
             public ITransaction Transaction { get; private set; }

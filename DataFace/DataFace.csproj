@@ -46,6 +46,7 @@
     <Compile Include="Core\IEnumerableExtensions.cs" />
     <Compile Include="Core\ITransaction.cs" />
     <Compile Include="Core\MultipleResultSetConverter.cs" />
+    <Compile Include="Core\SchemaAttribute.cs" />
     <Compile Include="Core\RowConverter.cs" />
     <Compile Include="Core\ModelCreator.cs" />
     <Compile Include="Core\ResultSetConverter.cs" />
