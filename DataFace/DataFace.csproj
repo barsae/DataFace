@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Npgsql">
+      <HintPath>..\packages\Npgsql.3.0.4\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,11 +59,14 @@
     <Compile Include="Core\ResultSetAttribute.cs" />
     <Compile Include="Core\ResultSetType.cs" />
     <Compile Include="Core\ValueConverter.cs" />
+    <Compile Include="Postgres\PostgreSqlDatabaseConnection.cs" />
+    <Compile Include="Postgres\PostgreSqlTransaction.cs" />
     <Compile Include="SqlServer\SqlServerDatabaseConnection.cs" />
     <Compile Include="SqlServer\SqlServerTransaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DataFace.csproj.nuspec" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

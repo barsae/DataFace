@@ -23,7 +23,7 @@ AS BEGIN
 END
 GO
 
-IF OBJECT_ID('ToMultipleResultSetModel') IS NOT NULL DROP PROCEDURE SprocWithParameter;
+IF OBJECT_ID('SprocWithParameter') IS NOT NULL DROP PROCEDURE SprocWithParameter;
 GO
 
 CREATE PROCEDURE SprocWithParameter
