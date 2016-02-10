@@ -23,6 +23,12 @@ namespace DataFace.Core {
             });
         }
 
+        public MultipleResultSetConverter ExecuteAdHocQuery(string adhocQuery) {
+            return WithTransaction((transaction) => {
+                return new MultipleResultSetConverter(transaction.ExecuteAdHocQuery(adhocQuery));
+            });
+        }
+
         public TransactionContext WithTransaction() {
             transactionContext = new TransactionContext(this, connection.BeginTransaction());
             return transactionContext;

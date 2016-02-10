@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Npgsql">
       <HintPath>..\packages\Npgsql.3.0.4\lib\net45\Npgsql.dll</HintPath>
     </Reference>
@@ -61,10 +65,13 @@
     <Compile Include="Core\ValueConverter.cs" />
     <Compile Include="Postgres\PostgreSqlDatabaseConnection.cs" />
     <Compile Include="Postgres\PostgreSqlTransaction.cs" />
+    <Compile Include="MySql\MySqlDatabaseConnection.cs" />
+    <Compile Include="MySql\MySqlTransaction.cs" />
     <Compile Include="SqlServer\SqlServerDatabaseConnection.cs" />
     <Compile Include="SqlServer\SqlServerTransaction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="DataFace.csproj.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>

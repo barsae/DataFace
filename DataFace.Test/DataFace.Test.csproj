@@ -69,14 +69,20 @@
     <Compile Include="PostgreSqlIntegrationTests\PostgreSqlIntegrationRepository.cs" />
     <Compile Include="PostgreSqlIntegrationTests\PostgreSqlTests.cs" />
     <Compile Include="SqlServerIntegrationTests\MultipleResultSetModel.cs" />
+    <Compile Include="SqlServerIntegrationTests\SqlServerIntegrationRepository.cs" />
+    <Compile Include="SqlServerIntegrationTests\SqlServerTests.cs" />
+    <Compile Include="MySqlIntegrationTests\MultipleResultSetModel.cs" />
     <Content Include="PostgreSqlIntegrationTests\CreateTestDatabase.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SqlServerIntegrationTests\CreateTestDatabase.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Compile Include="SqlServerIntegrationTests\SqlServerTests.cs" />
-    <Compile Include="SqlServerIntegrationTests\SqlServerIntegrationRepository.cs" />
+    <Content Include="MySqlIntegrationTests\CreateTestDatabase.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="MySqlIntegrationTests\MySqlTests.cs" />
+    <Compile Include="MySqlIntegrationTests\MySqlIntegrationRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
