@@ -16,12 +16,16 @@ namespace DataFace.Core {
             var values = row.Values;
 
             for (int ii = 0; ii < columns.Count; ii++) {
+                var value = values[ii];
+
                 var propertyName = columns[ii].Name;
                 var property = rowType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
                 if (property != null) {
-                    property.SetValue(result, Convert.ChangeType(values[ii], property.PropertyType));
+                    if (value != DBNull.Value) {
+                        property.SetValue(result, Convert.ChangeType(value, property.PropertyType));
+                    }
                 } else {
-                    throw new DataFaceException(string.Format("Could find property to bind to for column '{0}'", propertyName));
+                    throw new DataFaceException(string.Format("Couldn't find property to bind to for column '{0}'", propertyName));
                 }
             }
 

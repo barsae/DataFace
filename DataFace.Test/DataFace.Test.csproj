@@ -57,6 +57,7 @@
     <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_SingleOrDefaultRow_TestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_Rows_TestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_SingleRow_TestModel.cs" />
+    <Compile Include="MultipleResultSetConverterTests\TestModels\NullableTestModal.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\SingleRowTestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\ScalarTestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_Scalar_TestModel.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="MultipleResultSetConverterTests\ToMultipleResultSetModelTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\ToSingleOrDefaultTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\ToRowsTests.cs" />
+    <Compile Include="MultipleResultSetConverterTests\RowConverterTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\ToSingleRowTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PostgreSqlIntegrationTests\MultipleResultSetModel.cs" />
