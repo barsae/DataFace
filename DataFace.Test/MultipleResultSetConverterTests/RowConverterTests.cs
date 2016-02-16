@@ -19,5 +19,17 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
 
             Assert.AreEqual(null, converter.ConvertRowToObject<NullableTestModel>(columns, row).Value);
         }
+
+        [TestMethod]
+        public void RowConverter_HandlesValue_Correctly() {
+            var columns = new List<Column>() {
+                new Column("Value")
+            };
+            var row = new Row(new List<object>() { "|" });
+            
+            var converter = new RowConverter();
+
+            Assert.AreEqual('|', converter.ConvertRowToObject<NullableTestModel>(columns, row).Value);
+        }
     }
 }

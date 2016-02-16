@@ -22,7 +22,7 @@ namespace DataFace.Core {
                 var property = rowType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
                 if (property != null) {
                     if (value != DBNull.Value) {
-                        property.SetValue(result, Convert.ChangeType(value, property.PropertyType));
+                        SetValue(result, value, property);
                     }
                 } else {
                     throw new DataFaceException(string.Format("Couldn't find property to bind to for column '{0}'", propertyName));
@@ -30,6 +30,15 @@ namespace DataFace.Core {
             }
 
             return result;
+        }
+
+        private void SetValue(object model, object value, PropertyInfo property) {
+            var unwrappedType = property.PropertyType;
+            if (unwrappedType.IsGenericType && unwrappedType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+                unwrappedType = unwrappedType.GetGenericArguments()[0];
+            }
+
+            property.SetValue(model, Convert.ChangeType(value, unwrappedType));
         }
     }
 }
