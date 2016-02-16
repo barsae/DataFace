@@ -13,14 +13,15 @@ namespace DataFace.Core {
         }
 
         public ScalarType ToScalar<ScalarType>(ResultSet resultSet) {
-            return (ScalarType)ToScalar(resultSet);
+            return (ScalarType)ToScalar(typeof(ScalarType), resultSet);
         }
 
-        public object ToScalar(ResultSet resultSet) {
-            return resultSet.Rows
-                            .Single()
-                            .Values
-                            .Single();
+        public object ToScalar(Type scalarType, ResultSet resultSet) {
+            var value = resultSet.Rows
+                                 .Single()
+                                 .Values
+                                 .Single();
+            return converter.ConvertValue(value, scalarType);
         }
 
 

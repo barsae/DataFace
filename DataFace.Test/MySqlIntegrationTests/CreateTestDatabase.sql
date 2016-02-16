@@ -21,6 +21,25 @@ BEGIN
 END
 GO
 
+DROP TABLE IF EXISTS InsertableTable;
+GO
+CREATE TABLE InsertableTable(
+    IdentityColumn INT PRIMARY KEY AUTO_INCREMENT,
+    ValueColumn VARCHAR(50)
+);
+GO
+
+DROP PROCEDURE IF EXISTS InsertRecord;
+GO
+
+CREATE PROCEDURE InsertRecord ()
+BEGIN
+    INSERT INTO InsertableTable (`ValueColumn`) VALUES ('TestValue');
+
+    SELECT LAST_INSERT_ID() AS IdentityColumn;
+END
+GO
+
 DROP PROCEDURE IF EXISTS ToMultipleResultSetModel;
 GO
 

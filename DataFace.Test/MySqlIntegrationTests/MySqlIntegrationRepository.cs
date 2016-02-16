@@ -34,6 +34,10 @@ namespace DataFace.Test.MySqlIntegrationTests {
             return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
         }
 
+        public int InsertRecord() {
+            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+        }
+
         [Schema("testschema")]
         public int SprocWithSchema() {
             return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
