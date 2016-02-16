@@ -13,14 +13,25 @@ namespace DataFace.Core {
         }
 
         public ScalarType ToScalar<ScalarType>(ResultSet resultSet) {
-            return (ScalarType)ToScalar(typeof(ScalarType), resultSet);
+            return (ScalarType)ToScalar(resultSet);
         }
 
-        public object ToScalar(Type scalarType, ResultSet resultSet) {
+        public object ToScalar(ResultSet resultSet) {
             return resultSet.Rows
                             .Single()
                             .Values
                             .Single();
+        }
+
+
+        public List<ScalarType> ToScalars<ScalarType>(ResultSet resultSet) {
+            return (List<ScalarType>)ToScalars(typeof(ScalarType), resultSet);
+        }
+
+        public object ToScalars(Type scalarType, ResultSet resultSet) {
+            return resultSet.Rows
+                            .Select(row => row.Values.Single())
+                            .ToListOfDynamicType(scalarType);
         }
 
         public RowType ToSingleRow<RowType>(ResultSet resultSet) where RowType : new() {

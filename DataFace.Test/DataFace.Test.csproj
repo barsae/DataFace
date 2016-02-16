@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_Scalars_TestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_SingleOrDefaultRow_TestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_Rows_TestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_SingleRow_TestModel.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="MultipleResultSetConverterTests\TestModels\SingleRowTestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\ScalarTestModel.cs" />
     <Compile Include="MultipleResultSetConverterTests\TestModels\MultipleResultSet_Scalar_TestModel.cs" />
+    <Compile Include="MultipleResultSetConverterTests\ToScalarsTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\ToScalarTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\ToMultipleResultSetModelTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\ToSingleOrDefaultTests.cs" />

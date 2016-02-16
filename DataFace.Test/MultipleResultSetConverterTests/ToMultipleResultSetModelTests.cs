@@ -26,6 +26,28 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
         }
 
         [TestMethod]
+        public void ToMultipleResultSetModel_ToScalars_Works() {
+            var resultSet = new ResultSet() {
+                Columns = new List<Column>() { new Column("Value") },
+                Rows = new List<Row>() {
+                    new Row(new List<object>() { 21 }),
+                    new Row(new List<object>() { 22 }),
+                    new Row(new List<object>() { 23 })
+                }
+            };
+
+            var converter = new MultipleResultSetConverter(new List<ResultSet>() {
+                resultSet
+            });
+            var model = converter.ToMultipleResultSetModel<MultipleResultSet_Scalars_TestModel>();
+
+            Assert.AreEqual(3, model.Values.Count);
+            Assert.AreEqual(21, model.Values[0]);
+            Assert.AreEqual(22, model.Values[1]);
+            Assert.AreEqual(23, model.Values[2]);
+        }
+
+        [TestMethod]
         public void ToMultipleResultSetModel_ToSingleRow_Works() {
             var resultSet = new ResultSet() {
                 Columns = new List<Column>() { new Column("Value") },

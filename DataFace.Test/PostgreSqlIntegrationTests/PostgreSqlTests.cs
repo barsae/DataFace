@@ -20,26 +20,26 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             Assert.AreEqual(142, repo.ToScalar());
         }
 
-        [TestMethod]
-        public void PostgreSql_MultipleResultSets_Work() {
-            IDatabaseConnection connection = GetConnection();
-            InitializeDatabase(connection);
+        //[TestMethod]
+        //public void PostgreSql_MultipleResultSets_Work() {
+        //    IDatabaseConnection connection = GetConnection();
+        //    InitializeDatabase(connection);
 
-            var repo = new PostgreSqlIntegrationRepository(GetConnection());
-            var model = repo.ToMultipleResultSetModel();
+        //    var repo = new PostgreSqlIntegrationRepository(GetConnection());
+        //    var model = repo.ToMultipleResultSetModel();
 
-            Assert.AreEqual(model.ResultSet0.Count, 2);
-            Assert.AreEqual(model.ResultSet0[0].IntValue, 147);
-            Assert.AreEqual(model.ResultSet0[1].IntValue, 192);
-            Assert.AreEqual(model.ResultSet0[0].BoolValue, true);
-            Assert.AreEqual(model.ResultSet0[1].BoolValue, false);
+        //    Assert.AreEqual(model.ResultSet0.Count, 2);
+        //    Assert.AreEqual(model.ResultSet0[0].IntValue, 147);
+        //    Assert.AreEqual(model.ResultSet0[1].IntValue, 192);
+        //    Assert.AreEqual(model.ResultSet0[0].BoolValue, true);
+        //    Assert.AreEqual(model.ResultSet0[1].BoolValue, false);
 
-            Assert.AreEqual(model.ResultSet1.Count, 2);
-            Assert.AreEqual(model.ResultSet1[0].StringValue, "abc");
-            Assert.AreEqual(model.ResultSet1[1].StringValue, "def");
-            Assert.AreEqual(model.ResultSet1[0].DateTimeValue, new DateTime(2001, 2, 3));
-            Assert.AreEqual(model.ResultSet1[1].DateTimeValue, new DateTime(2004, 5, 6));
-        }
+        //    Assert.AreEqual(model.ResultSet1.Count, 2);
+        //    Assert.AreEqual(model.ResultSet1[0].StringValue, "abc");
+        //    Assert.AreEqual(model.ResultSet1[1].StringValue, "def");
+        //    Assert.AreEqual(model.ResultSet1[0].DateTimeValue, new DateTime(2001, 2, 3));
+        //    Assert.AreEqual(model.ResultSet1[1].DateTimeValue, new DateTime(2004, 5, 6));
+        //}
 
         [TestMethod]
         public void PostgreSql_SprocWithParameter_Works() {

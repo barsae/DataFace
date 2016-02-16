@@ -20,6 +20,19 @@ namespace DataFace.Test.MySqlIntegrationTests {
             Assert.AreEqual(142, repo.ToScalar());
         }
 
+        public void MySql_ToScalars_Works() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new MySqlIntegrationRepository(GetConnection());
+            var result = repo.ToScalars();
+
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(142, result[0]);
+            Assert.AreEqual(143, result[1]);
+            Assert.AreEqual(144, result[2]);
+        }
+
         [TestMethod]
         public void MySql_MultipleResultSets_Work() {
             IDatabaseConnection connection = GetConnection();

@@ -19,6 +19,10 @@ namespace DataFace.Core {
             return converter.ToScalar<ScalarType>(ResultSets.Single());
         }
 
+        public List<ScalarType> ToScalars<ScalarType>() {
+            return converter.ToScalars<ScalarType>(ResultSets.Single());
+        }
+
         public RowType ToSingleRow<RowType>() where RowType : new() {
             return converter.ToSingleRow<RowType>(ResultSets.Single());
         }
@@ -49,7 +53,8 @@ namespace DataFace.Core {
 
         private object ConvertResultSet(ResultSet resultSet, ResultSetType resultSetType, Type propertyType) {
             switch (resultSetType) {
-                case ResultSetType.Scalar: return converter.ToScalar(propertyType, resultSet);
+                case ResultSetType.Scalar: return converter.ToScalar(resultSet);
+                case ResultSetType.Scalars: return converter.ToScalars(GetUnderlyingListType(propertyType), resultSet);
                 case ResultSetType.SingleRow: return converter.ToSingleRow(propertyType, resultSet);
                 case ResultSetType.SingleOrDefaultRow: return converter.ToSingleOrDefaultRow(propertyType, resultSet);
                 case ResultSetType.Rows: return converter.ToRows(GetUnderlyingListType(propertyType), resultSet);
