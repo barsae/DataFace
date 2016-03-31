@@ -42,6 +42,17 @@ namespace DataFace.Test.SqlServerIntegrationTests {
         }
 
         [TestMethod]
+        public void SqlServer_EmptyMultipleResultSets_Work() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            var model = repo.EmptyMultipleResultSetModel();
+
+            Assert.IsNotNull(model);
+        }
+
+        [TestMethod]
         public void SqlServer_SprocWithParameter_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);

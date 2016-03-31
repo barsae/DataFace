@@ -23,6 +23,19 @@ AS BEGIN
 END
 GO
 
+IF OBJECT_ID('EmptyMultipleResultSetModel') IS NOT NULL DROP PROCEDURE EmptyMultipleResultSetModel;
+GO
+
+CREATE PROCEDURE EmptyMultipleResultSetModel
+AS BEGIN
+    SELECT IntValue = 147, BoolValue = 1
+    WHERE 1 = 0
+
+    SELECT StringValue = 'abc', DateTimeValue = CAST('2001-02-03' AS DATETIME)
+    WHERE 1 = 0
+END
+GO
+
 IF OBJECT_ID('SprocWithParameter') IS NOT NULL DROP PROCEDURE SprocWithParameter;
 GO
 

@@ -18,6 +18,10 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             return ExecuteStoredProcedure(new object[] {}).ToMultipleResultSetModel<MultipleResultSetModel>();
         }
 
+        public MultipleResultSetModel EmptyMultipleResultSetModel() {
+            return ExecuteStoredProcedure(new object[] {}).ToMultipleResultSetModel<MultipleResultSetModel>();
+        }
+
         public int SprocWithParameter(int parameter) {
             return ExecuteStoredProcedure(new object[] { parameter }).ToScalar<int>();
         }
