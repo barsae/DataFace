@@ -98,6 +98,16 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(123, repo.SprocWithSchema());
         }
 
+        [TestMethod]
+        public void SqlServer_ManyManyTransactions_DoesntLeak() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            for (int ii = 0; ii < 1000; ii++) {
+                var repo = new SqlServerIntegrationRepository(GetConnection());
+                repo.SprocWithSchema();
+            }
+        }
 
         private IDatabaseConnection GetConnection() {
             var connectionString = "Server=localhost;Database=DataFaceIntegrationTests;Integrated Security=True;";
