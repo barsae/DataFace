@@ -51,6 +51,10 @@ namespace DataFace.Core {
             return model;
         }
 
+        public List<Dictionary<string, string>> ToDictionary() {
+            return converter.ToDictionary(ResultSets.Single());
+        }
+
         private object ConvertResultSet(ResultSet resultSet, ResultSetType resultSetType, Type propertyType) {
             switch (resultSetType) {
                 case ResultSetType.Scalar: return converter.ToScalar(propertyType, resultSet);

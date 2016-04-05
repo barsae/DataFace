@@ -62,5 +62,24 @@ namespace DataFace.Core {
                             .Select(row => binder.ConvertRowToObject(rowType, columns, row))
                             .ToListOfDynamicType(rowType);
         }
+
+        public List<Dictionary<string, string>> ToDictionary(ResultSet resultSet) {
+            var results = new List<Dictionary<string, string>>();
+
+            foreach (var row in resultSet.Rows) {
+                var result = new Dictionary<string, string>();
+
+                for (int ii = 0; ii < resultSet.Columns.Count; ii++) {
+                    var column = resultSet.Columns[ii];
+                    var value = row.Values[ii];
+                    result[column.Name] = value.ToString();
+
+                }
+
+                results.Add(result);
+            }
+
+            return results;
+        }
     }
 }
