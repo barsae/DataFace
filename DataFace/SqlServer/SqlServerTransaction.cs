@@ -7,17 +7,16 @@ using System.Linq;
 using System.Text;
 
 namespace DataFace.SqlServer {
-    public class SqlServerTransaction : ITransaction {
+    public class SqlServerTransaction : ITransaction, IDisposable {
         private SqlConnection connection;
         private SqlTransaction transaction;
 
         public SqlServerTransaction(SqlServerDatabaseConnection databaseConnection) {
             this.connection = new SqlConnection(databaseConnection.ConnectionString);
-            this.connection.Open();
-            this.transaction = this.connection.BeginTransaction();
         }
 
         public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters) {
+            Open();
             using (var command = new SqlCommand()) {
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = procedureName;
@@ -35,6 +34,7 @@ namespace DataFace.SqlServer {
         }
 
         public List<ResultSet> ExecuteAdHocQuery(string adhocQuery) {
+            Open();
             using (var command = new SqlCommand()) {
                 command.CommandType = CommandType.Text;
                 command.CommandText = adhocQuery;
@@ -57,6 +57,14 @@ namespace DataFace.SqlServer {
 
         public void Dispose() {
             transaction.Dispose();
+            connection.Dispose();
+        }
+
+        private void Open() {
+            if (transaction == null) {
+                connection.Open();
+                transaction = connection.BeginTransaction();
+            }
         }
 
         private List<ResultSet> ConvertReaderToMultipleResultSet(SqlDataReader reader) {
