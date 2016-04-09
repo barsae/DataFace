@@ -56,7 +56,6 @@
     <Compile Include="Core\MultipleResultSetConverter.cs" />
     <Compile Include="Core\SchemaAttribute.cs" />
     <Compile Include="Core\RowConverter.cs" />
-    <Compile Include="Core\ModelCreator.cs" />
     <Compile Include="Core\ResultSetConverter.cs" />
     <Compile Include="Core\ResultSet.cs" />
     <Compile Include="Core\Row.cs" />

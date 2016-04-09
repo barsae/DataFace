@@ -72,8 +72,7 @@ namespace DataFace.Core {
                 for (int ii = 0; ii < resultSet.Columns.Count; ii++) {
                     var column = resultSet.Columns[ii];
                     var value = row.Values[ii];
-                    result[column.Name] = value.ToString();
-
+                    result[column.Name] = value == DBNull.Value ? null : value.ToString();
                 }
 
                 results.Add(result);
