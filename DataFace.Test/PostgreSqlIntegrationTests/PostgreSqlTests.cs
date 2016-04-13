@@ -87,6 +87,13 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             Assert.AreEqual(123, repo.SprocWithSchema());
         }
 
+        [TestMethod]
+        public void PostgreSql_ToSingleOrDefault_Works() {
+            IDatabaseConnection connection = GetConnection();
+
+            var repo = new PostgreSqlIntegrationRepository(GetConnection());
+            repo.ToSingleOrDefault();
+        }
 
         private IDatabaseConnection GetConnection() {
             var connectionString = "Server=localhost;Database=datafaceintegrationtests;Username=postgresintegrationtests;Password=postgresintegrationtests;";

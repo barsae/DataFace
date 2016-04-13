@@ -9,6 +9,18 @@ BEGIN
     RETURN QUERY SELECT 142 AS Value;
 END;
 $$ LANGUAGE plpgsql;
+GO
+
+DROP FUNCTION IF EXISTS ToSingleOrDefault();
+
+CREATE FUNCTION ToSingleOrDefault()
+RETURNS TABLE(Value INT)
+AS $$
+BEGIN
+    RETURN QUERY SELECT 142 AS Value WHERE 1 = 2;
+END;
+$$ LANGUAGE plpgsql;
+GO
 
 -- TODO: Multiple result sets in postgresql are over my head
 --IF OBJECT_ID('ToMultipleResultSetModel') IS NOT NULL DROP PROCEDURE ToMultipleResultSetModel;

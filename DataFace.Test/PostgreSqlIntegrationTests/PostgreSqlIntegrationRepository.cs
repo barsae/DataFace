@@ -14,6 +14,10 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
         }
 
+        public object ToSingleOrDefault() {
+            return ExecuteStoredProcedure(new object[] {}).ToSingleOrDefaultRow<object>();
+        }
+
         public MultipleResultSetModel ToMultipleResultSetModel() {
             return ExecuteStoredProcedure(new object[] {}).ToMultipleResultSetModel<MultipleResultSetModel>();
         }

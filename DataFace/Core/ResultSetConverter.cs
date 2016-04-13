@@ -48,7 +48,11 @@ namespace DataFace.Core {
         }
 
         public object ToSingleOrDefaultRow(Type rowType, ResultSet resultSet) {
-            return converter.ConvertRowToObject(rowType, resultSet.Columns, resultSet.Rows.SingleOrDefault());
+            var row = resultSet.Rows.SingleOrDefault();
+            if (row == null) {
+                return null;
+            }
+            return converter.ConvertRowToObject(rowType, resultSet.Columns, row);
         }
 
         public List<RowType> ToRows<RowType>(ResultSet resultSet) where RowType : new() {
