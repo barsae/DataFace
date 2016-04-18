@@ -56,7 +56,9 @@ namespace DataFace.SqlServer {
         }
 
         public void Dispose() {
-            transaction.Dispose();
+            if (transaction != null) {
+                transaction.Dispose();
+            }
             connection.Dispose();
         }
 
