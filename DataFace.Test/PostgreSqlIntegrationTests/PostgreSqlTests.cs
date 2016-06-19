@@ -95,6 +95,17 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             repo.ToSingleOrDefault();
         }
 
+        [TestMethod]
+        public void PostgreSql_ManyQueries_DoesntFail() {
+            IDatabaseConnection connection = GetConnection();
+
+            var repo = new PostgreSqlIntegrationRepository(GetConnection());
+
+            for (int ii = 0; ii < 100; ii++) {
+                repo.ExecuteAdHocQuery("SELECT 1");
+            }
+        }
+
         private IDatabaseConnection GetConnection() {
             var connectionString = "Server=localhost;Database=datafaceintegrationtests;Username=postgresintegrationtests;Password=postgresintegrationtests;";
             if (connectionString != "Server=localhost;Database=datafaceintegrationtests;Username=postgresintegrationtests;Password=postgresintegrationtests;") {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 
 namespace DataFace.PostgreSql {
-    public class PostgreSqlTransaction : ITransaction {
+    public class PostgreSqlTransaction : ITransaction, IDisposable {
         private NpgsqlConnection connection;
         private NpgsqlTransaction transaction;
 
@@ -56,7 +56,10 @@ namespace DataFace.PostgreSql {
         }
 
         public void Dispose() {
-            transaction.Dispose();
+            if (transaction != null) {
+                transaction.Dispose();
+            }
+            connection.Dispose();
         }
 
         private List<ResultSet> ConvertReaderToMultipleResultSet(NpgsqlDataReader reader, string procedureName) {
