@@ -15,12 +15,12 @@ namespace DataFace.Core {
             this.connection = connection;
         }
 
+        public MultipleResultSetConverter ExecuteStoredProcedure<InputModel>(InputModel inputModel, [CallerMemberName]string sprocName = "") {
+            return ExecuteStoredProcedure(sprocName, GetParameters(inputModel));
+        }
+
         public MultipleResultSetConverter ExecuteStoredProcedure(object[] rawParameters, [CallerMemberName]string sprocName = "") {
-            var parameters = GetParameters(sprocName, rawParameters);
-            var schemaPrefix = GetSchemaPrefix(sprocName);
-            return WithTransaction((transaction) => {
-                return new MultipleResultSetConverter(transaction.ExecuteStoredProcedure(schemaPrefix + sprocName, parameters));
-            });
+            return ExecuteStoredProcedure(sprocName, GetParameters(sprocName, rawParameters));
         }
 
         public MultipleResultSetConverter ExecuteAdHocQuery(string adhocQuery) {
@@ -32,6 +32,13 @@ namespace DataFace.Core {
         public TransactionContext WithTransaction() {
             transactionContext = new TransactionContext(this, connection.BeginTransaction());
             return transactionContext;
+        }
+
+        private MultipleResultSetConverter ExecuteStoredProcedure(string sprocName, Dictionary<string, object> parameters) {
+            var schemaPrefix = GetSchemaPrefix(sprocName);
+            return WithTransaction((transaction) => {
+                return new MultipleResultSetConverter(transaction.ExecuteStoredProcedure(schemaPrefix + sprocName, parameters));
+            });
         }
 
         private ReturnType WithTransaction<ReturnType>(Func<ITransaction, ReturnType> func) {
@@ -51,6 +58,13 @@ namespace DataFace.Core {
                             .GetParameters()
                             .Zip(rawParameters, (param, value) => new KeyValuePair<string, object>(param.Name, value))
                             .ToDictionary((kvp) => kvp.Key, (kvp) => kvp.Value);
+        }
+
+        private Dictionary<string, object> GetParameters<InputModel>(InputModel inputModel) {
+            return inputModel
+                .GetType()
+                .GetProperties()
+                .ToDictionary(a => a.Name, b => b.GetValue(inputModel));
         }
 
         private string GetSchemaPrefix(string sprocName) {
