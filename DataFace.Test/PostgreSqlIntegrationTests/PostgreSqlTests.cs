@@ -118,7 +118,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             using (var transaction = connection.BeginTransaction()) {
                 foreach (var batch in ReadSqlFileIntoBatches("PostgreSqlIntegrationTests\\CreateTestDatabase.sql")) {
                     if (batch.Trim() != "") {
-                        transaction.ExecuteAdHocQuery(batch);
+                        transaction.ExecuteAdHocQuery(batch, new CommandOptions { CommandTimeout = 30 });
                     }
                 }
 

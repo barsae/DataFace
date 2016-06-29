@@ -11,13 +11,16 @@ namespace DataFace.SqlServer {
         private SqlConnection connection;
         private SqlTransaction transaction;
 
+        public int CommandTimeout { get; set; }
+
         public SqlServerTransaction(SqlServerDatabaseConnection databaseConnection) {
             this.connection = new SqlConnection(databaseConnection.ConnectionString);
         }
 
-        public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters) {
+        public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters, CommandOptions commandOptions) {
             Open();
             using (var command = new SqlCommand()) {
+                command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = procedureName;
                 command.Connection = connection;
@@ -33,9 +36,10 @@ namespace DataFace.SqlServer {
             }
         }
 
-        public List<ResultSet> ExecuteAdHocQuery(string adhocQuery) {
+        public List<ResultSet> ExecuteAdHocQuery(string adhocQuery, CommandOptions commandOptions) {
             Open();
             using (var command = new SqlCommand()) {
+                command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.Text;
                 command.CommandText = adhocQuery;
                 command.Connection = connection;

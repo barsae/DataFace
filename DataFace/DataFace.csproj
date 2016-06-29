@@ -50,6 +50,7 @@
     <Compile Include="Core\BaseRepository.cs" />
     <Compile Include="Core\Column.cs" />
     <Compile Include="Core\DataFaceException.cs" />
+    <Compile Include="Core\CommandOptions.cs" />
     <Compile Include="Core\IDatabaseConnection.cs" />
     <Compile Include="Core\IEnumerableExtensions.cs" />
     <Compile Include="Core\ITransaction.cs" />

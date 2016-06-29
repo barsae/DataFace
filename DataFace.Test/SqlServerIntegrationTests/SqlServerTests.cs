@@ -121,7 +121,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             using (var transaction = connection.BeginTransaction()) {
                 foreach (var batch in ReadSqlFileIntoBatches("SqlServerIntegrationTests\\CreateTestDatabase.sql")) {
                     if (batch.Trim() != "") {
-                        transaction.ExecuteAdHocQuery(batch);
+                        transaction.ExecuteAdHocQuery(batch, new CommandOptions { CommandTimeout = 30 });
                     }
                 }
 
