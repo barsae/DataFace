@@ -15,16 +15,16 @@ public class MyRepository : BaseRepository {
 	public MyRepository() : base(new SqlServerDatabaseConnection("myConnectionString")) {
     }
     
-    public int ScalarExample(int sprocParameter) {
-        return ExecuteStoredProcedure(new object[] { sprocParameter }).ToScalar<int>();
+    public int ScalarExample() {
+        return ExecuteStoredProcedure().ToScalar<int>();
     }
 	   
     public List<RowModel> RowsExample() {
-        return ExecuteStoredProcedure(new object[] {}).ToRows<RowModel>();
+        return ExecuteStoredProcedure().ToRows<RowModel>();
     }
     
     public MultipleResultSetModel MultipleResultSetExample() {
-        return ExecuteStoredProcedure(new object[] {}).ToMultipleResultSetModel<MultipleResultSetModel>();
+        return ExecuteStoredProcedure().ToMultipleResultSetModel<MultipleResultSetModel>();
     }
 }
 
@@ -34,15 +34,16 @@ public class RowModel {
 
 public class MultipleResultSetModel {
 	[ResultSet(0, ResultSetType.Rows)]
-	public List<RowModel> ExampleResultSet { get; set; }
+	public List<RowModel> FirstResultSet { get; set; }
+
+	[ResultSet(0, ResultSetType.Rows)]
+	public List<RowModel> SecondResultSet { get; set; }
 }
 
 ```
 In the above example, ```ScalarExample```, ```RowsExample```, and ```MultipleResultSetExample``` are stored procedures in a SQL Server database.  DataFace uses reflection to find the name of the stored procedures and parameters declared in your repository class.  It then provides helper methods for processing the results to scalar, a single row, many rows, or even multiple result sets.
 
-Often, a stored procedure will contain a number of input parameters, such as in the ```InputModel``` class below.
-While DataFace supports the ability to explicitly list each parameter in the object array input for the ```ExecuteStoredProcedure``` method, it is typically more efficient to use generics, and let DataFace process the input models on your behalf.
-This is accomplished through reflection. DataFace reflects on the input model type, and produces a parameter for each property within the model.
+To pass parameters to a stored procedure, pass in an ```InputModel``` (see example below).  DataFace will reflect on the input model type, and produce a parameter for each property within the model.
 
 ```
 
@@ -51,27 +52,22 @@ public class MyRepository : BaseRepository {
     }
     
     public int ScalarExample(InputModel input) {
-        return ExecuteStoredProcedure<InputModel>(input).ToScalar<int>();
+        return ExecuteStoredProcedure(input).ToScalar<int>();
     }
 	   
     public List<RowModel> RowsExample(InputModel input) {
-        return ExecuteStoredProcedure<InputModel>(input).ToRows<RowModel>();
+        return ExecuteStoredProcedure(input).ToRows<RowModel>();
     }
     
     public MultipleResultSetModel MultipleResultSetExample(InputModel input) {
-        return ExecuteStoredProcedure<InputModel>(input).ToMultipleResultSetModel<MultipleResultSetModel>();
+        return ExecuteStoredProcedure(input).ToMultipleResultSetModel<MultipleResultSetModel>();
     }
 }
 
 public class InputModel {
-	public int Item1 {get; set;}
-	public int Item2 {get; set;}
-	public int Item3 {get; set;}
-	public int Item4 {get; set;}
-	public int Item5 {get; set;}
-	public int Item6 {get; set;}
-	public int Item7 {get; set;}
-	public int Item8 {get; set;}
+	public int Item1 { get; set; }
+	public int Item2 { get; set; }
+	public int Item3 { get; set; }
 }
 
 ```

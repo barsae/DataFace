@@ -11,32 +11,35 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
         }
 
         public int ToScalar() {
-            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+            return ExecuteStoredProcedure().ToScalar<int>();
         }
 
         public object ToSingleOrDefault() {
-            return ExecuteStoredProcedure(new object[] {}).ToSingleOrDefaultRow<object>();
+            return ExecuteStoredProcedure().ToSingleOrDefaultRow<object>();
         }
 
         public MultipleResultSetModel ToMultipleResultSetModel() {
-            return ExecuteStoredProcedure(new object[] {}).ToMultipleResultSetModel<MultipleResultSetModel>();
+            return ExecuteStoredProcedure().ToMultipleResultSetModel<MultipleResultSetModel>();
         }
 
         public int SprocWithParameter(int parameter) {
-            return ExecuteStoredProcedure(new object[] { parameter }).ToScalar<int>();
+            var input = new SprocInputModel() {
+                Parameter = parameter
+            };
+            return ExecuteStoredProcedure(input).ToScalar<int>();
         }
 
         public void SprocWithSideEffect() {
-            ExecuteStoredProcedure(new object[] {});
+            ExecuteStoredProcedure();
         }
 
         public int GetCountOfSideEffects() {
-            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+            return ExecuteStoredProcedure().ToScalar<int>();
         }
 
         [Schema("testschema")]
         public int SprocWithSchema() {
-            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+            return ExecuteStoredProcedure().ToScalar<int>();
         }
     }
 }

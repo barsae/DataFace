@@ -15,12 +15,12 @@ namespace DataFace.Core {
             this.connection = connection;
         }
 
-        public MultipleResultSetConverter ExecuteStoredProcedure<InputModel>(InputModel inputModel, [CallerMemberName]string sprocName = "") {
-            return ExecuteStoredProcedure(sprocName, GetParameters(inputModel));
+        public MultipleResultSetConverter ExecuteStoredProcedure([CallerMemberName]string sprocName = "") {
+            return ExecuteStoredProcedure(sprocName, new Dictionary<string, object>());
         }
 
-        public MultipleResultSetConverter ExecuteStoredProcedure(object[] rawParameters, [CallerMemberName]string sprocName = "") {
-            return ExecuteStoredProcedure(sprocName, GetParameters(sprocName, rawParameters));
+        public MultipleResultSetConverter ExecuteStoredProcedure<InputModel>(InputModel inputModel, [CallerMemberName]string sprocName = "") {
+            return ExecuteStoredProcedure(sprocName, GetParameters(inputModel));
         }
 
         public MultipleResultSetConverter ExecuteAdHocQuery(string adhocQuery) {
@@ -53,18 +53,10 @@ namespace DataFace.Core {
             }
         }
 
-        private Dictionary<string, object> GetParameters(string sprocName, object[] rawParameters) {
-            return GetType().GetMethod(sprocName)
-                            .GetParameters()
-                            .Zip(rawParameters, (param, value) => new KeyValuePair<string, object>(param.Name, value))
-                            .ToDictionary((kvp) => kvp.Key, (kvp) => kvp.Value);
-        }
-
         private Dictionary<string, object> GetParameters<InputModel>(InputModel inputModel) {
-            return inputModel
-                .GetType()
-                .GetProperties()
-                .ToDictionary(a => a.Name, b => b.GetValue(inputModel));
+            return inputModel.GetType()
+                             .GetProperties()
+                             .ToDictionary(a => a.Name, b => b.GetValue(inputModel));
         }
 
         private string GetSchemaPrefix(string sprocName) {
@@ -76,7 +68,6 @@ namespace DataFace.Core {
             }
             return "";
         }
-
 
         public class TransactionContext : IDisposable {
             public ITransaction Transaction { get; private set; }
