@@ -17,14 +17,6 @@ namespace DataFace.Core {
             defaultCommandOptions = new CommandOptions { CommandTimeout = 30 };
         }
 
-        public MultipleResultSetConverter ExecuteStoredProcedure<InputModel>(InputModel inputModel, CommandOptions commandOptions, [CallerMemberName]string sprocName = "") {
-            return ExecuteStoredProcedure(sprocName, GetParameters(inputModel), commandOptions);
-        }
-
-        public MultipleResultSetConverter ExecuteStoredProcedure(object[] rawParameters, CommandOptions commandOptions, [CallerMemberName]string sprocName = "") {
-            return ExecuteStoredProcedure(sprocName, GetParameters(sprocName, rawParameters), defaultCommandOptions);
-        }
-
         public MultipleResultSetConverter ExecuteStoredProcedure([CallerMemberName]string sprocName = "") {
             return ExecuteStoredProcedure(sprocName, new Dictionary<string, object>(), defaultCommandOptions);
         }
