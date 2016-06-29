@@ -1,5 +1,5 @@
 
-# DataFace: Easy Database Interfacing for C# 
+# DataFace: Easy Database Interfacing for C#
 
 DataFace helps your C# project have a clear and easy to manage database access layer.
 
@@ -14,15 +14,15 @@ using DataFace.SqlServer;
 public class MyRepository : BaseRepository {
 	public MyRepository() : base(new SqlServerDatabaseConnection("myConnectionString")) {
     }
-    
+
     public int ScalarExample(int sprocParameter) {
         return ExecuteStoredProcedure(new object[] { sprocParameter }).ToScalar<int>();
     }
-	   
+
     public List<RowModel> RowsExample() {
         return ExecuteStoredProcedure(new object[] {}).ToRows<RowModel>();
     }
-    
+
     public MultipleResultSetModel MultipleResultSetExample() {
         return ExecuteStoredProcedure(new object[] {}).ToMultipleResultSetModel<MultipleResultSetModel>();
     }
@@ -49,15 +49,15 @@ This is accomplished through reflection. DataFace reflects on the input model ty
 public class MyRepository : BaseRepository {
 	public MyRepository() : base(new SqlServerDatabaseConnection("myConnectionString")) {
     }
-    
+
     public int ScalarExample(InputModel input) {
         return ExecuteStoredProcedure<InputModel>(input).ToScalar<int>();
     }
-	   
+
     public List<RowModel> RowsExample(InputModel input) {
         return ExecuteStoredProcedure<InputModel>(input).ToRows<RowModel>();
     }
-    
+
     public MultipleResultSetModel MultipleResultSetExample(InputModel input) {
         return ExecuteStoredProcedure<InputModel>(input).ToMultipleResultSetModel<MultipleResultSetModel>();
     }
@@ -76,6 +76,26 @@ public class InputModel {
 
 ```
 
+### Optional Command Options
+
+Optional command options can be supplied to set CommandTimeout for both adhoc queries and stored procedures.
+
+```
+
+// Standard call to ExecuteStoredProcedure without command options.
+[Schema("purge")]
+public void DeletePurgeJob(int jobId) {
+    ExecuteStoredProcedure(new GeneralUse.JobID(jobId));
+}
+
+// The same call including a 60 second command timeout.
+[Schema("purge")]
+public void DeletePurgeJob(int jobId) {
+    ExecuteStoredProcedure(new GeneralUse.JobID(jobId), new CommandOptions { CommandTimeout = 60 });
+}
+
+```
+
 ### Usage
 
 * Install DataFace as a [nuget package](https://www.nuget.org/packages/DataFace/) onto your solution
@@ -83,4 +103,3 @@ public class InputModel {
 * In the constructor, choose which IDatabaseConnection to use (only SQL Server is supported for now)
 * Fill out your model with stored procedures as methods of the repository.  Use ToRows, ToSingleRow, and other helper methods to process your database results.
 * Write code that uses your new database access layer!
-

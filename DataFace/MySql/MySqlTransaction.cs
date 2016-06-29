@@ -14,18 +14,21 @@ namespace DataFace.MySql {
         private RawConnection connection;
         private RawTransaction transaction;
 
+        public int CommandTimeout { get; set; }
+
         public MySqlTransaction(MySqlDatabaseConnection databaseConnection) {
             this.connection = new RawConnection(databaseConnection.ConnectionString);
             this.connection.Open();
             this.transaction = this.connection.BeginTransaction();
         }
 
-        public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters) {
+        public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters, CommandOptions commandOptions) {
             if (procedureName.Contains('.')) {
                 throw new ArgumentException("MySql does not support schemas");
             }
 
             using (var command = new MySqlCommand()) {
+                command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = procedureName;
                 command.Connection = connection;
@@ -41,8 +44,9 @@ namespace DataFace.MySql {
             }
         }
 
-        public List<ResultSet> ExecuteAdHocQuery(string adhocQuery) {
+        public List<ResultSet> ExecuteAdHocQuery(string adhocQuery, CommandOptions commandOptions) {
             using (var command = new MySqlCommand()) {
+                command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.Text;
                 command.CommandText = adhocQuery;
                 command.Connection = connection;

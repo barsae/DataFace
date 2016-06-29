@@ -10,22 +10,36 @@ namespace DataFace.Core {
     public class BaseRepository {
         private IDatabaseConnection connection;
         private TransactionContext transactionContext;
+        private CommandOptions defaultCommandOptions;
 
         public BaseRepository(IDatabaseConnection connection) {
             this.connection = connection;
+            defaultCommandOptions = new CommandOptions { CommandTimeout = 30 };
+        }
+
+        public MultipleResultSetConverter ExecuteStoredProcedure<InputModel>(InputModel inputModel, CommandOptions commandOptions, [CallerMemberName]string sprocName = "") {
+            return ExecuteStoredProcedure(sprocName, GetParameters(inputModel), commandOptions);
+        }
+
+        public MultipleResultSetConverter ExecuteStoredProcedure(object[] rawParameters, CommandOptions commandOptions, [CallerMemberName]string sprocName = "") {
+            return ExecuteStoredProcedure(sprocName, GetParameters(sprocName, rawParameters), defaultCommandOptions);
         }
 
         public MultipleResultSetConverter ExecuteStoredProcedure<InputModel>(InputModel inputModel, [CallerMemberName]string sprocName = "") {
-            return ExecuteStoredProcedure(sprocName, GetParameters(inputModel));
+            return ExecuteStoredProcedure(sprocName, GetParameters(inputModel), defaultCommandOptions);
         }
 
         public MultipleResultSetConverter ExecuteStoredProcedure(object[] rawParameters, [CallerMemberName]string sprocName = "") {
-            return ExecuteStoredProcedure(sprocName, GetParameters(sprocName, rawParameters));
+            return ExecuteStoredProcedure(sprocName, GetParameters(sprocName, rawParameters), defaultCommandOptions);
         }
 
         public MultipleResultSetConverter ExecuteAdHocQuery(string adhocQuery) {
+            return ExecuteAdHocQuery(adhocQuery, defaultCommandOptions);
+        }
+
+        public MultipleResultSetConverter ExecuteAdHocQuery(string adhocQuery, CommandOptions commandOptions) {
             return WithTransaction((transaction) => {
-                return new MultipleResultSetConverter(transaction.ExecuteAdHocQuery(adhocQuery));
+                return new MultipleResultSetConverter(transaction.ExecuteAdHocQuery(adhocQuery, commandOptions));
             });
         }
 
@@ -34,17 +48,18 @@ namespace DataFace.Core {
             return transactionContext;
         }
 
-        private MultipleResultSetConverter ExecuteStoredProcedure(string sprocName, Dictionary<string, object> parameters) {
+        private MultipleResultSetConverter ExecuteStoredProcedure(string sprocName, Dictionary<string, object> parameters, CommandOptions commandOptions) {
             var schemaPrefix = GetSchemaPrefix(sprocName);
             return WithTransaction((transaction) => {
-                return new MultipleResultSetConverter(transaction.ExecuteStoredProcedure(schemaPrefix + sprocName, parameters));
+                return new MultipleResultSetConverter(transaction.ExecuteStoredProcedure(schemaPrefix + sprocName, parameters, commandOptions));
             });
         }
 
         private ReturnType WithTransaction<ReturnType>(Func<ITransaction, ReturnType> func) {
             if (transactionContext != null) {
                 return func(transactionContext.Transaction);
-            } else {
+            }
+            else {
                 using (var transaction = connection.BeginTransaction()) {
                     var result = func(transaction);
                     transaction.Commit();

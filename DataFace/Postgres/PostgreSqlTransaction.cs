@@ -11,14 +11,17 @@ namespace DataFace.PostgreSql {
         private NpgsqlConnection connection;
         private NpgsqlTransaction transaction;
 
+        public int CommandTimeout { get; set; }
+
         public PostgreSqlTransaction(PostgreSqlDatabaseConnection databaseConnection) {
             this.connection = new NpgsqlConnection(databaseConnection.ConnectionString);
             this.connection.Open();
             this.transaction = this.connection.BeginTransaction();
         }
 
-        public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters) {
+        public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters, CommandOptions commandOptions) {
             using (var command = new NpgsqlCommand()) {
+                command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = procedureName;
                 command.Connection = connection;
@@ -34,8 +37,9 @@ namespace DataFace.PostgreSql {
             }
         }
 
-        public List<ResultSet> ExecuteAdHocQuery(string adhocQuery) {
+        public List<ResultSet> ExecuteAdHocQuery(string adhocQuery, CommandOptions commandOptions) {
             using (var command = new NpgsqlCommand()) {
+                command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.Text;
                 command.CommandText = adhocQuery;
                 command.Connection = connection;
