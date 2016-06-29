@@ -69,10 +69,13 @@
     <Compile Include="MultipleResultSetConverterTests\ToRowsTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\RowConverterTests.cs" />
     <Compile Include="MultipleResultSetConverterTests\ToSingleRowTests.cs" />
+    <Compile Include="MySqlIntegrationTests\SprocInputModel.cs" />
+    <Compile Include="PostgreSqlIntegrationTests\SprocInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PostgreSqlIntegrationTests\MultipleResultSetModel.cs" />
     <Compile Include="PostgreSqlIntegrationTests\PostgreSqlIntegrationRepository.cs" />
     <Compile Include="PostgreSqlIntegrationTests\PostgreSqlTests.cs" />
+    <Compile Include="SqlServerIntegrationTests\SprocInputModel.cs" />
     <Compile Include="SqlServerIntegrationTests\MultipleResultSetModel.cs" />
     <Compile Include="SqlServerIntegrationTests\SqlServerIntegrationRepository.cs" />
     <Compile Include="SqlServerIntegrationTests\SqlServerTests.cs" />

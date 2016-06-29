@@ -11,36 +11,39 @@ namespace DataFace.Test.MySqlIntegrationTests {
         }
 
         public Int64 ToScalar() {
-            return ExecuteStoredProcedure(new object[] {}).ToScalar<Int64>();
+            return ExecuteStoredProcedure().ToScalar<Int64>();
         }
 
         public List<Int64> ToScalars() {
-            return ExecuteStoredProcedure(new object[] {}).ToScalars<Int64>();
+            return ExecuteStoredProcedure().ToScalars<Int64>();
         }
 
         public MultipleResultSetModel ToMultipleResultSetModel() {
-            return ExecuteStoredProcedure(new object[] {}).ToMultipleResultSetModel<MultipleResultSetModel>();
+            return ExecuteStoredProcedure().ToMultipleResultSetModel<MultipleResultSetModel>();
         }
 
         public int SprocWithParameter(int parameter) {
-            return ExecuteStoredProcedure(new object[] { parameter }).ToScalar<int>();
+            var input = new SprocInputModel() {
+                Parameter = parameter
+            };
+            return ExecuteStoredProcedure(input).ToScalar<int>();
         }
 
         public void SprocWithSideEffect() {
-            ExecuteStoredProcedure(new object[] {});
+            ExecuteStoredProcedure();
         }
 
         public int GetCountOfSideEffects() {
-            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+            return ExecuteStoredProcedure().ToScalar<int>();
         }
 
         public int InsertRecord() {
-            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+            return ExecuteStoredProcedure().ToScalar<int>();
         }
 
         [Schema("testschema")]
         public int SprocWithSchema() {
-            return ExecuteStoredProcedure(new object[] {}).ToScalar<int>();
+            return ExecuteStoredProcedure().ToScalar<int>();
         }
     }
 }

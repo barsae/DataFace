@@ -1,5 +1,5 @@
 
-# DataFace: Easy Database Interfacing for C# 
+# DataFace: Easy Database Interfacing for C#
 
 DataFace helps your C# project have a clear and easy to manage database access layer.
 
@@ -15,16 +15,16 @@ public class MyRepository : BaseRepository {
 	public MyRepository() : base(new SqlServerDatabaseConnection("myConnectionString")) {
     }
     
-    public int ScalarExample(int sprocParameter) {
-        return ExecuteStoredProcedure(new object[] { sprocParameter }).ToScalar<int>();
+    public int ScalarExample() {
+        return ExecuteStoredProcedure().ToScalar<int>();
     }
-    
+
     public List<RowModel> RowsExample() {
-        return ExecuteStoredProcedure(new object[] {}).ToRows<RowModel>();
+        return ExecuteStoredProcedure().ToRows<RowModel>();
     }
-    
+
     public MultipleResultSetModel MultipleResultSetExample() {
-        return ExecuteStoredProcedure(new object[] {}).ToMultipleResultSetModel<MultipleResultSetModel>();
+        return ExecuteStoredProcedure().ToMultipleResultSetModel<MultipleResultSetModel>();
     }
 }
 
@@ -34,11 +34,63 @@ public class RowModel {
 
 public class MultipleResultSetModel {
 	[ResultSet(0, ResultSetType.Rows)]
-	public List<RowModel> ExampleResultSet { get; set; }
+	public List<RowModel> FirstResultSet { get; set; }
+
+	[ResultSet(0, ResultSetType.Rows)]
+	public List<RowModel> SecondResultSet { get; set; }
 }
+
+```
+In the above example, ```ScalarExample```, ```RowsExample```, and ```MultipleResultSetExample``` are stored procedures in a SQL Server database.  DataFace uses reflection to find the name of the stored procedures and parameters declared in your repository class.  It then provides helper methods for processing the results to scalar, a single row, many rows, or even multiple result sets.
+
+To pass parameters to a stored procedure, pass in an ```InputModel``` (see example below).  DataFace will reflect on the input model type, and produce a parameter for each property within the model.
+
 ```
 
-In the above example, ```ScalarExample```, ```RowsExample```, and ```MultipleResultSetExample``` are stored procedures in a SQL Server database.  DataFace uses reflection to find the name of the stored procedures and parameters declared in your repository class.  It then provides helper methods for processing the results to scalar, a single row, many rows, or even multiple result sets.
+public class MyRepository : BaseRepository {
+	public MyRepository() : base(new SqlServerDatabaseConnection("myConnectionString")) {
+    }
+
+    public int ScalarExample(InputModel input) {
+        return ExecuteStoredProcedure(input).ToScalar<int>();
+    }
+
+    public List<RowModel> RowsExample(InputModel input) {
+        return ExecuteStoredProcedure(input).ToRows<RowModel>();
+    }
+
+    public MultipleResultSetModel MultipleResultSetExample(InputModel input) {
+        return ExecuteStoredProcedure(input).ToMultipleResultSetModel<MultipleResultSetModel>();
+    }
+}
+
+public class InputModel {
+	public int Item1 { get; set; }
+	public int Item2 { get; set; }
+	public int Item3 { get; set; }
+}
+
+```
+
+### Optional Command Options
+
+Optional command options can be supplied to set CommandTimeout for both adhoc queries and stored procedures.
+
+```
+
+// Standard call to ExecuteStoredProcedure without command options.
+[Schema("purge")]
+public void DeletePurgeJob(int jobId) {
+    ExecuteStoredProcedure(new GeneralUse.JobID(jobId));
+}
+
+// The same call including a 60 second command timeout.
+[Schema("purge")]
+public void DeletePurgeJob(int jobId) {
+    ExecuteStoredProcedure(new GeneralUse.JobID(jobId), new CommandOptions { CommandTimeout = 60 });
+}
+
+```
 
 ### Usage
 
@@ -47,4 +99,3 @@ In the above example, ```ScalarExample```, ```RowsExample```, and ```MultipleRes
 * In the constructor, choose which IDatabaseConnection to use (only SQL Server is supported for now)
 * Fill out your model with stored procedures as methods of the repository.  Use ToRows, ToSingleRow, and other helper methods to process your database results.
 * Write code that uses your new database access layer!
-
