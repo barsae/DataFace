@@ -33,12 +33,16 @@ namespace DataFace.Core {
         }
 
         public object ConvertValue(object value, Type type) {
-            var unwrappedType = type;
-            if (unwrappedType.IsGenericType && unwrappedType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-                unwrappedType = unwrappedType.GetGenericArguments()[0];
+            if (value == DBNull.Value) {
+                return Activator.CreateInstance(type);
+            } else {
+                var unwrappedType = type;
+                if (unwrappedType.IsGenericType && unwrappedType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+                    unwrappedType = unwrappedType.GetGenericArguments()[0];
+                }
+
+                return Convert.ChangeType(value, unwrappedType);
             }
-            
-            return Convert.ChangeType(value, unwrappedType);
         }
     }
 }

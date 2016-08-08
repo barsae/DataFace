@@ -21,6 +21,15 @@ namespace DataFace.Test.SqlServerIntegrationTests {
         }
 
         [TestMethod]
+        public void SqlServer_ToScalarNull_Works() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            Assert.IsNull(repo.ToScalarNull());
+        }
+
+        [TestMethod]
         public void SqlServer_MultipleResultSets_Work() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);

@@ -8,6 +8,15 @@ AS BEGIN
 END
 GO
 
+IF OBJECT_ID('ToScalarNull') IS NOT NULL DROP PROCEDURE ToScalarNull;
+GO
+
+CREATE PROCEDURE ToScalarNull
+AS BEGIN
+    SELECT Value = CAST(NULL AS INT)
+END
+GO
+
 IF OBJECT_ID('ToMultipleResultSetModel') IS NOT NULL DROP PROCEDURE ToMultipleResultSetModel;
 GO
 
