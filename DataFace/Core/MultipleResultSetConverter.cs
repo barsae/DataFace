@@ -19,6 +19,10 @@ namespace DataFace.Core {
             return converter.ToScalar<ScalarType>(ResultSets.Single());
         }
 
+        public ScalarType ToFirstOrDefaultScalar<ScalarType>() {
+            return converter.ToFirstOrDefaultScalar<ScalarType>(ResultSets.Single());
+        }
+
         public List<ScalarType> ToScalars<ScalarType>() {
             return converter.ToScalars<ScalarType>(ResultSets.Single());
         }

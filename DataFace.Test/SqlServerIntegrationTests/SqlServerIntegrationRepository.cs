@@ -18,6 +18,14 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             return ExecuteStoredProcedure().ToScalar<int?>();
         }
 
+        public int? ToFirstOrDefaultScalar1() {
+            return ExecuteStoredProcedure().ToFirstOrDefaultScalar<int?>();
+        }
+
+        public int? ToFirstOrDefaultScalar2() {
+            return ExecuteStoredProcedure().ToFirstOrDefaultScalar<int?>();
+        }
+
         public MultipleResultSetModel ToMultipleResultSetModel() {
             return ExecuteStoredProcedure().ToMultipleResultSetModel<MultipleResultSetModel>();
         }

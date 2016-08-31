@@ -17,6 +17,26 @@ AS BEGIN
 END
 GO
 
+IF OBJECT_ID('ToFirstOrDefaultScalar1') IS NOT NULL DROP PROCEDURE ToFirstOrDefaultScalar1;
+GO
+
+CREATE PROCEDURE ToFirstOrDefaultScalar1
+AS BEGIN
+    SELECT Value = CAST(1 AS INT)
+END
+GO
+
+IF OBJECT_ID('ToFirstOrDefaultScalar2') IS NOT NULL DROP PROCEDURE ToFirstOrDefaultScalar2;
+GO
+
+CREATE PROCEDURE ToFirstOrDefaultScalar2
+AS BEGIN
+    SELECT Value = CAST(1 AS INT)
+    WHERE 1 = 2
+END
+GO
+
+
 IF OBJECT_ID('ToMultipleResultSetModel') IS NOT NULL DROP PROCEDURE ToMultipleResultSetModel;
 GO
 

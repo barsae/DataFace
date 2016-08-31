@@ -30,6 +30,24 @@ namespace DataFace.Test.SqlServerIntegrationTests {
         }
 
         [TestMethod]
+        public void SqlServer_ToFirstOrDefault_WithValue_Works() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            Assert.AreEqual(1, repo.ToFirstOrDefaultScalar1());
+        }
+
+        [TestMethod]
+        public void SqlServer_ToFirstOrDefault_WithoutValue_Works() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            Assert.IsNull(repo.ToFirstOrDefaultScalar2());
+        }
+
+        [TestMethod]
         public void SqlServer_MultipleResultSets_Work() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);

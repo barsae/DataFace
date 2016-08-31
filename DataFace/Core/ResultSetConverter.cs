@@ -24,6 +24,22 @@ namespace DataFace.Core {
             return converter.ConvertValue(value, scalarType);
         }
 
+        public ScalarType ToFirstOrDefaultScalar<ScalarType>(ResultSet resultSet) {
+            return (ScalarType)ToFirstOrDefaultScalar(typeof(ScalarType), resultSet);
+        }
+
+
+        public object ToFirstOrDefaultScalar(Type scalarType, ResultSet resultSet) {
+            var row = resultSet.Rows.FirstOrDefault();
+
+            if (row != null) {
+                var value = row.Values.Single();
+                return converter.ConvertValue(value, scalarType);
+            }
+
+            return null;
+        }
+
 
         public List<ScalarType> ToScalars<ScalarType>(ResultSet resultSet) {
             return (List<ScalarType>)ToScalars(typeof(ScalarType), resultSet);
