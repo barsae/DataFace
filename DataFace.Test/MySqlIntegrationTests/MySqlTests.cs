@@ -113,6 +113,17 @@ namespace DataFace.Test.MySqlIntegrationTests {
             repo.SprocWithSchema();
         }
 
+        [TestMethod]
+        public void MySql_ManyManyTransactions_DoesntLeak() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            for (int ii = 0; ii < 1000; ii++) {
+                var repo = new MySqlIntegrationRepository(GetConnection());
+                repo.SprocWithParameter(1);
+            }
+        }
+
         private IDatabaseConnection GetConnection() {
             var connectionString = "Server=localhost;Database=DataFaceIntegrationTests;Username=dataface;Password=datafacetest";
             if (connectionString != "Server=localhost;Database=DataFaceIntegrationTests;Username=dataface;Password=datafacetest") {

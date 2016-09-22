@@ -10,7 +10,7 @@ using RawConnection = MySql.Data.MySqlClient.MySqlConnection;
 using RawTransaction = MySql.Data.MySqlClient.MySqlTransaction;
 
 namespace DataFace.MySql {
-    public class MySqlTransaction : ITransaction {
+    public class MySqlTransaction : ITransaction, IDisposable {
         private RawConnection connection;
         private RawTransaction transaction;
 
@@ -27,6 +27,7 @@ namespace DataFace.MySql {
                 throw new ArgumentException("MySql does not support schemas");
             }
 
+            Open();
             using (var command = new MySqlCommand()) {
                 command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.StoredProcedure;
@@ -45,6 +46,7 @@ namespace DataFace.MySql {
         }
 
         public List<ResultSet> ExecuteAdHocQuery(string adhocQuery, CommandOptions commandOptions) {
+            Open();
             using (var command = new MySqlCommand()) {
                 command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.Text;
@@ -68,6 +70,14 @@ namespace DataFace.MySql {
 
         public void Dispose() {
             transaction.Dispose();
+            connection.Dispose();
+        }
+
+        private void Open() {
+            if (transaction == null) {
+                connection.Open();
+                transaction = connection.BeginTransaction();
+            }
         }
 
         private List<ResultSet> ConvertReaderToMultipleResultSet(MySqlDataReader reader) {
