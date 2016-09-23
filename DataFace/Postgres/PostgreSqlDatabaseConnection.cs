@@ -13,8 +13,14 @@ namespace DataFace.PostgreSql {
             this.ConnectionString = connectionString;
         }
 
-        public ITransaction BeginTransaction() {
+        public ICommand BeginCommand() {
             return new PostgreSqlTransaction(this);
+        }
+
+        public ITransaction BeginTransaction() {
+            var transaction = new PostgreSqlTransaction(this);
+            transaction.BeginTransaction();
+            return transaction;
         }
     }
 }

@@ -18,8 +18,6 @@ namespace DataFace.MySql {
 
         public MySqlTransaction(MySqlDatabaseConnection databaseConnection) {
             this.connection = new RawConnection(databaseConnection.ConnectionString);
-            this.connection.Open();
-            this.transaction = this.connection.BeginTransaction();
         }
 
         public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters, CommandOptions commandOptions) {
@@ -60,6 +58,11 @@ namespace DataFace.MySql {
             }
         }
 
+        public void BeginTransaction() {
+            Open();
+            transaction = connection.BeginTransaction();
+        }
+
         public void Commit() {
             transaction.Commit();
         }
@@ -69,14 +72,16 @@ namespace DataFace.MySql {
         }
 
         public void Dispose() {
-            transaction.Dispose();
+            if (transaction != null) {
+                transaction.Dispose();
+            }
+
             connection.Dispose();
         }
 
         private void Open() {
-            if (transaction == null) {
+            if (connection.State == ConnectionState.Closed) {
                 connection.Open();
-                transaction = connection.BeginTransaction();
             }
         }
 

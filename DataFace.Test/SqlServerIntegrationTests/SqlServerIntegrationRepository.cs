@@ -53,5 +53,9 @@ namespace DataFace.Test.SqlServerIntegrationTests {
         public int SprocWithSchema() {
             return ExecuteStoredProcedure().ToScalar<int>();
         }
+
+        public void DisasterSproc() {
+            ExecuteStoredProcedure(new CommandOptions() { CommandTimeout = 1 });
+        }
     }
 }

@@ -13,8 +13,14 @@ namespace DataFace.MySql {
             this.ConnectionString = connectionString;
         }
 
-        public ITransaction BeginTransaction() {
+        public ICommand BeginCommand() {
             return new MySqlTransaction(this);
+        }
+
+        public ITransaction BeginTransaction() {
+            var transaction = new MySqlTransaction(this);
+            transaction.BeginTransaction();
+            return transaction;
         }
     }
 }

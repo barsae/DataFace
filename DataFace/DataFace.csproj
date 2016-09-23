@@ -53,6 +53,7 @@
     <Compile Include="Core\CommandOptions.cs" />
     <Compile Include="Core\IDatabaseConnection.cs" />
     <Compile Include="Core\IEnumerableExtensions.cs" />
+    <Compile Include="Core\ICommand.cs" />
     <Compile Include="Core\ITransaction.cs" />
     <Compile Include="Core\MultipleResultSetConverter.cs" />
     <Compile Include="Core\SchemaAttribute.cs" />

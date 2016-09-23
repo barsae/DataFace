@@ -13,8 +13,14 @@ namespace DataFace.SqlServer {
             this.ConnectionString = connectionString;
         }
 
-        public ITransaction BeginTransaction() {
+        public ICommand BeginCommand() {
             return new SqlServerTransaction(this);
+        }
+
+        public ITransaction BeginTransaction() {
+            var transaction = new SqlServerTransaction(this);
+            transaction.BeginTransaction();
+            return transaction;
         }
     }
 }

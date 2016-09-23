@@ -15,11 +15,10 @@ namespace DataFace.PostgreSql {
 
         public PostgreSqlTransaction(PostgreSqlDatabaseConnection databaseConnection) {
             this.connection = new NpgsqlConnection(databaseConnection.ConnectionString);
-            this.connection.Open();
-            this.transaction = this.connection.BeginTransaction();
         }
 
         public List<ResultSet> ExecuteStoredProcedure(string procedureName, Dictionary<string, object> parameters, CommandOptions commandOptions) {
+            Open();
             using (var command = new NpgsqlCommand()) {
                 command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.StoredProcedure;
@@ -38,6 +37,7 @@ namespace DataFace.PostgreSql {
         }
 
         public List<ResultSet> ExecuteAdHocQuery(string adhocQuery, CommandOptions commandOptions) {
+            Open();
             using (var command = new NpgsqlCommand()) {
                 command.CommandTimeout = commandOptions.CommandTimeout;
                 command.CommandType = CommandType.Text;
@@ -49,6 +49,11 @@ namespace DataFace.PostgreSql {
                     return ConvertReaderToMultipleResultSet(reader, null);
                 }
             }
+        }
+
+        public void BeginTransaction() {
+            Open();
+            transaction = connection.BeginTransaction();
         }
 
         public void Commit() {
@@ -64,6 +69,12 @@ namespace DataFace.PostgreSql {
                 transaction.Dispose();
             }
             connection.Dispose();
+        }
+
+        private void Open() {
+            if (connection.State == ConnectionState.Closed) {
+                connection.Open();
+            }
         }
 
         private List<ResultSet> ConvertReaderToMultipleResultSet(NpgsqlDataReader reader, string procedureName) {

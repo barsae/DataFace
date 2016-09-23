@@ -38,8 +38,8 @@ namespace DataFace.Core {
         }
 
         public MultipleResultSetConverter ExecuteAdHocQuery(string adhocQuery, CommandOptions commandOptions) {
-            return WithTransaction((transaction) => {
-                return new MultipleResultSetConverter(transaction.ExecuteAdHocQuery(adhocQuery, commandOptions));
+            return WithCommand((command) => {
+                return new MultipleResultSetConverter(command.ExecuteAdHocQuery(adhocQuery, commandOptions));
             });
         }
 
@@ -50,19 +50,18 @@ namespace DataFace.Core {
 
         private MultipleResultSetConverter ExecuteStoredProcedure(string sprocName, Dictionary<string, object> parameters, CommandOptions commandOptions) {
             var schemaPrefix = GetSchemaPrefix(sprocName);
-            return WithTransaction((transaction) => {
-                return new MultipleResultSetConverter(transaction.ExecuteStoredProcedure(schemaPrefix + sprocName, parameters, commandOptions));
+            return WithCommand((command) => {
+                return new MultipleResultSetConverter(command.ExecuteStoredProcedure(schemaPrefix + sprocName, parameters, commandOptions));
             });
         }
 
-        private ReturnType WithTransaction<ReturnType>(Func<ITransaction, ReturnType> func) {
+        private ReturnType WithCommand<ReturnType>(Func<ICommand, ReturnType> func) {
             if (transactionContext != null) {
                 return func(transactionContext.Transaction);
             }
             else {
-                using (var transaction = connection.BeginTransaction()) {
+                using (var transaction = connection.BeginCommand()) {
                     var result = func(transaction);
-                    transaction.Commit();
                     return result;
                 }
             }
@@ -107,5 +106,7 @@ namespace DataFace.Core {
                 repository.transactionContext = null;
             }
         }
+
+        public object commandContext { get; set; }
     }
 }

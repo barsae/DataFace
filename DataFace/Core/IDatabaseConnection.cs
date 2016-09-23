@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataFace.Core {
     public interface IDatabaseConnection {
+        ICommand BeginCommand();
         ITransaction BeginTransaction();
     }
 }

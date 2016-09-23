@@ -136,6 +136,13 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             }
         }
 
+        [TestMethod]
+        public void SqlServer_DDLStatement_DoesntCrash() {
+            var repo = new SqlServerIntegrationRepository(GetConnection());
+            repo.ExecuteAdHocQuery("CREATE DATABASE datafacetestddl");
+            repo.ExecuteAdHocQuery("DROP DATABASE datafacetestddl");
+        }
+
         private IDatabaseConnection GetConnection() {
             var connectionString = "Server=localhost;Database=DataFaceIntegrationTests;Integrated Security=True;";
             if (connectionString != "Server=localhost;Database=DataFaceIntegrationTests;Integrated Security=True;") {

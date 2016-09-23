@@ -51,6 +51,11 @@ namespace DataFace.SqlServer {
             }
         }
 
+        public void BeginTransaction() {
+            Open();
+            transaction = connection.BeginTransaction();
+        }
+
         public void Commit() {
             transaction.Commit();
         }
@@ -67,9 +72,8 @@ namespace DataFace.SqlServer {
         }
 
         private void Open() {
-            if (transaction == null) {
+            if (connection.State == ConnectionState.Closed) {
                 connection.Open();
-                transaction = connection.BeginTransaction();
             }
         }
 
