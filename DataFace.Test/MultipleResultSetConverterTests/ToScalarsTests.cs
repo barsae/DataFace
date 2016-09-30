@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Collections.Generic;
 using NSubstitute;
 using DataFace.Core;
 
 namespace DataFace.Test.MultipleResultSetConverterTests {
-    [TestClass]
+    [TestFixture]
     public class ToScalarsTests {
-        [TestMethod]
+        [TestCase]
         public void ToScalars_IsValid_Works() {
             var resultSet = new ResultSet() {
                 Columns = new List<Column>() { new Column("Value") },

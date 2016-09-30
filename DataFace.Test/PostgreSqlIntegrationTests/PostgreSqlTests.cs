@@ -1,6 +1,6 @@
 ﻿using DataFace.Core;
 using DataFace.PostgreSql;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DataFace.Test.PostgreSqlIntegrationTests {
-    [TestClass]
+    [TestFixture]
     public class PostgreSqlTests {
-        [TestMethod]
+        [TestCase]
         public void PostgreSql_ToScalar_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -20,7 +20,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             Assert.AreEqual(142, repo.ToScalar());
         }
 
-        //[TestMethod]
+        //[TestCase]
         //public void PostgreSql_MultipleResultSets_Work() {
         //    IDatabaseConnection connection = GetConnection();
         //    InitializeDatabase(connection);
@@ -41,7 +41,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
         //    Assert.AreEqual(model.ResultSet1[1].DateTimeValue, new DateTime(2004, 5, 6));
         //}
 
-        [TestMethod]
+        [TestCase]
         public void PostgreSql_SprocWithParameter_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -50,7 +50,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             Assert.AreEqual(143, repo.SprocWithParameter(143));
         }
 
-        [TestMethod]
+        [TestCase]
         public void PostgreSql_CommitTransaction_HasSideEffect() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -64,7 +64,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             Assert.AreEqual(1, repo.GetCountOfSideEffects());
         }
 
-        [TestMethod]
+        [TestCase]
         public void PostgreSql_RollbackTransaction_DoesntHaveSideEffect() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -78,7 +78,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             Assert.AreEqual(0, repo.GetCountOfSideEffects());
         }
 
-        [TestMethod]
+        [TestCase]
         public void PostgreSql_SprocWithSchema_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -87,7 +87,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             Assert.AreEqual(123, repo.SprocWithSchema());
         }
 
-        [TestMethod]
+        [TestCase]
         public void PostgreSql_ToSingleOrDefault_Works() {
             IDatabaseConnection connection = GetConnection();
 
@@ -95,7 +95,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
             repo.ToSingleOrDefault();
         }
 
-        [TestMethod]
+        [TestCase]
         public void PostgreSql_ManyQueries_DoesntFail() {
             IDatabaseConnection connection = GetConnection();
 
@@ -127,6 +127,7 @@ namespace DataFace.Test.PostgreSqlIntegrationTests {
         }
 
         private IEnumerable<string> ReadSqlFileIntoBatches(string filename) {
+            filename = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString() + "\\" + filename;
             var builder = new StringBuilder();
             foreach (var line in File.ReadAllLines(filename)) {
                 if (line.Trim() == "GO") {

@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Collections.Generic;
 using NSubstitute;
 using DataFace.Test.MultipleResultSetConverterTests.TestModels;
 using DataFace.Core;
 
 namespace DataFace.Test.MultipleResultSetConverterTests {
-    [TestClass]
+    [TestFixture]
     public class ToSingleOrDefaultRowTests {
-        [TestMethod]
+        [TestCase]
         public void ToSingleOrDefaultRow_SingleOrDefaultRow_Works() {
             var resultSet = new ResultSet() {
                 Columns = new List<Column>() { new Column("Value") },
