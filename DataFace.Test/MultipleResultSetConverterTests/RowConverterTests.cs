@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Collections.Generic;
 using NSubstitute;
 using DataFace.Test.MultipleResultSetConverterTests.TestModels;
 using DataFace.Core;
 
 namespace DataFace.Test.MultipleResultSetConverterTests {
-    [TestClass]
+    [TestFixture]
     public class RowConverterTests {
-        [TestMethod]
+        [TestCase]
         public void RowConverter_HandlesDBNull_WithoutCrashing() {
             var columns = new List<Column>() {
                 new Column("Value")
@@ -20,7 +20,7 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
             Assert.AreEqual(null, converter.ConvertRowToObject<NullableTestModel>(columns, row).Value);
         }
 
-        [TestMethod]
+        [TestCase]
         public void RowConverter_HandlesValue_Correctly() {
             var columns = new List<Column>() {
                 new Column("Value")

@@ -1,17 +1,18 @@
 ﻿using DataFace.Core;
 using DataFace.MySql;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataFace.Test.MySqlIntegrationTests {
-    [TestClass]
+    [TestFixture]
     public class MySqlTests {
-        [TestMethod]
+        [TestCase]
         public void MySql_ToScalar_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -20,7 +21,7 @@ namespace DataFace.Test.MySqlIntegrationTests {
             Assert.AreEqual(142, repo.ToScalar());
         }
 
-        [TestMethod]
+        [TestCase]
         public void MySql_ToScalars_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -34,7 +35,7 @@ namespace DataFace.Test.MySqlIntegrationTests {
             Assert.AreEqual(144, result[2]);
         }
 
-        [TestMethod]
+        [TestCase]
         public void MySql_InsertRecord_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -45,7 +46,7 @@ namespace DataFace.Test.MySqlIntegrationTests {
             Assert.AreEqual(1, result);
         }
 
-        [TestMethod]
+        [TestCase]
         public void MySql_MultipleResultSets_Work() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -66,7 +67,7 @@ namespace DataFace.Test.MySqlIntegrationTests {
             Assert.AreEqual(model.ResultSet1[1].DateTimeValue, new DateTime(2004, 5, 6));
         }
 
-        [TestMethod]
+        [TestCase]
         public void MySql_SprocWithParameter_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -75,7 +76,7 @@ namespace DataFace.Test.MySqlIntegrationTests {
             Assert.AreEqual(143, repo.SprocWithParameter(143));
         }
 
-        [TestMethod]
+        [TestCase]
         public void MySql_CommitTransaction_HasSideEffect() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -89,7 +90,7 @@ namespace DataFace.Test.MySqlIntegrationTests {
             Assert.AreEqual(1, repo.GetCountOfSideEffects());
         }
 
-        [TestMethod]
+        [TestCase]
         public void MySql_RollbackTransaction_DoesntHaveSideEffect() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -103,17 +104,16 @@ namespace DataFace.Test.MySqlIntegrationTests {
             Assert.AreEqual(0, repo.GetCountOfSideEffects());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [TestCase]
         public void MySql_SprocWithSchema_ThrowsException() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
 
             var repo = new MySqlIntegrationRepository(GetConnection());
-            repo.SprocWithSchema();
+            Assert.Throws<ArgumentException>(() => repo.SprocWithSchema());
         }
 
-        [TestMethod]
+        [TestCase]
         public void MySql_ManyManyTransactions_DoesntLeak() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -146,11 +146,13 @@ namespace DataFace.Test.MySqlIntegrationTests {
 
         private IEnumerable<string> ReadSqlFileIntoBatches(string filename) {
             var builder = new StringBuilder();
+            filename = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString() + "\\" + filename;
             foreach (var line in File.ReadAllLines(filename)) {
                 if (line.Trim() == "GO") {
                     yield return builder.ToString();
                     builder.Clear();
-                } else {
+                }
+                else {
                     builder.AppendLine(line);
                 }
             }

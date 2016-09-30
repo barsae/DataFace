@@ -1,6 +1,6 @@
 ﻿using DataFace.Core;
 using DataFace.SqlServer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DataFace.Test.SqlServerIntegrationTests {
-    [TestClass]
+    [TestFixture]
     public class SqlServerTests {
-        [TestMethod]
+        [TestCase]
         public void SqlServer_ToScalar_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -20,7 +20,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(142, repo.ToScalar());
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_ToScalarNull_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -29,7 +29,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.IsNull(repo.ToScalarNull());
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_ToFirstOrDefault_WithValue_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -38,7 +38,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(1, repo.ToFirstOrDefaultScalar1());
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_ToFirstOrDefault_WithoutValue_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -47,7 +47,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.IsNull(repo.ToFirstOrDefaultScalar2());
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_MultipleResultSets_Work() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -68,7 +68,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(model.ResultSet1[1].DateTimeValue, new DateTime(2004, 5, 6));
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_EmptyMultipleResultSets_Work() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -79,7 +79,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.IsNotNull(model);
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_SprocWithParameter_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -88,7 +88,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(143, repo.SprocWithParameter(143));
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_CommitTransaction_HasSideEffect() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -102,7 +102,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(1, repo.GetCountOfSideEffects());
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_RollbackTransaction_DoesntHaveSideEffect() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -116,7 +116,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(0, repo.GetCountOfSideEffects());
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_SprocWithSchema_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -125,7 +125,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             Assert.AreEqual(123, repo.SprocWithSchema());
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_ManyManyTransactions_DoesntLeak() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);
@@ -136,7 +136,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
             }
         }
 
-        [TestMethod]
+        [TestCase]
         public void SqlServer_DDLStatement_DoesntCrash() {
             var repo = new SqlServerIntegrationRepository(GetConnection());
             repo.ExecuteAdHocQuery("CREATE DATABASE datafacetestddl");
@@ -164,6 +164,7 @@ namespace DataFace.Test.SqlServerIntegrationTests {
         }
 
         private IEnumerable<string> ReadSqlFileIntoBatches(string filename) {
+            filename = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString() + "\\" + filename;
             var builder = new StringBuilder();
             foreach (var line in File.ReadAllLines(filename)) {
                 if (line.Trim() == "GO") {

@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Collections.Generic;
 using NSubstitute;
 using DataFace.Test.MultipleResultSetConverterTests.TestModels;
 using DataFace.Core;
 
 namespace DataFace.Test.MultipleResultSetConverterTests {
-    [TestClass]
+    [TestFixture]
     public class ToMultipleResultSetModelTests {
-        [TestMethod]
+        [TestCase]
         public void ToMultipleResultSetModel_ToScalar_Works() {
             var resultSet = new ResultSet() {
                 Columns = new List<Column>() { new Column("Value") },
@@ -25,7 +25,7 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
             Assert.AreEqual(21, model.Value);
         }
 
-        [TestMethod]
+        [TestCase]
         public void ToMultipleResultSetModel_ToScalars_Works() {
             var resultSet = new ResultSet() {
                 Columns = new List<Column>() { new Column("Value") },
@@ -47,7 +47,7 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
             Assert.AreEqual(23, model.Values[2]);
         }
 
-        [TestMethod]
+        [TestCase]
         public void ToMultipleResultSetModel_ToSingleRow_Works() {
             var resultSet = new ResultSet() {
                 Columns = new List<Column>() { new Column("Value") },
@@ -64,7 +64,7 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
             Assert.AreEqual(22, model.SingleRow.Value);
         }
 
-        [TestMethod]
+        [TestCase]
         public void ToMultipleResultSetModel_ToSingleOrDefaultRow_Works() {
             var resultSet = new ResultSet() {
                 Columns = new List<Column>() { new Column("Value") },
@@ -81,7 +81,7 @@ namespace DataFace.Test.MultipleResultSetConverterTests {
             Assert.AreEqual(23, model.SingleOrDefaultRow.Value);
         }
 
-        [TestMethod]
+        [TestCase]
         public void ToMultipleResultSetModel_ToRows_Works() {
             var resultSet = new ResultSet() {
                 Columns = new List<Column>() { new Column("Value") },
