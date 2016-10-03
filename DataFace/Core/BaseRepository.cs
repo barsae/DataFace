@@ -7,10 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DataFace.Core {
-    public class BaseRepository {
+    public class BaseRepository : IBaseRepository {
         private IDatabaseConnection connection;
-        private TransactionContext transactionContext;
         private CommandOptions defaultCommandOptions;
+
+        public object commandContext { get; set; }
+        public TransactionContext transactionContext { get; set; }
 
         public BaseRepository(IDatabaseConnection connection) {
             this.connection = connection;
@@ -82,31 +84,5 @@ namespace DataFace.Core {
             }
             return "";
         }
-
-        public class TransactionContext : IDisposable {
-            public ITransaction Transaction { get; private set; }
-
-            private BaseRepository repository;
-
-            public TransactionContext(BaseRepository repository, ITransaction transaction) {
-                this.Transaction = transaction;
-                this.repository = repository;
-            }
-
-            public void Commit() {
-                Transaction.Commit();
-            }
-
-            public void Rollback() {
-                Transaction.Rollback();
-            }
-
-            public void Dispose() {
-                Transaction.Dispose();
-                repository.transactionContext = null;
-            }
-        }
-
-        public object commandContext { get; set; }
     }
 }
