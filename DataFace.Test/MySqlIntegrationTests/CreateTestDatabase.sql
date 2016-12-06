@@ -8,6 +8,15 @@ BEGIN
 END
 GO
 
+DROP PROCEDURE IF EXISTS ToFirstOrDefaultScalar;
+GO
+
+CREATE PROCEDURE ToFirstOrDefaultScalar ()
+BEGIN
+    SELECT NULL AS Value;
+END
+GO
+
 DROP PROCEDURE IF EXISTS ToScalars;
 GO
 

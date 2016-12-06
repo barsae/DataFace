@@ -22,6 +22,16 @@ namespace DataFace.Test.MySqlIntegrationTests {
         }
 
         [TestCase]
+        public void MySql_ToFirstOrDefaultScalar_Works() {
+            IDatabaseConnection connection = GetConnection();
+            InitializeDatabase(connection);
+
+            var repo = new MySqlIntegrationRepository(GetConnection());
+            Assert.AreEqual((string)null, repo.ToFirstOrDefaultScalar());
+        }
+
+
+        [TestCase]
         public void MySql_ToScalars_Works() {
             IDatabaseConnection connection = GetConnection();
             InitializeDatabase(connection);

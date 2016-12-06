@@ -34,7 +34,11 @@ namespace DataFace.Core {
 
         public object ConvertValue(object value, Type type) {
             if (value == DBNull.Value) {
-                return Activator.CreateInstance(type);
+                if (type == typeof(string)) {
+                    return (string)null;
+                } else {
+                    return Activator.CreateInstance(type);
+                }
             } else {
                 var unwrappedType = type;
                 if (unwrappedType.IsGenericType && unwrappedType.GetGenericTypeDefinition() == typeof(Nullable<>)) {

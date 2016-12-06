@@ -14,6 +14,10 @@ namespace DataFace.Test.MySqlIntegrationTests {
             return ExecuteStoredProcedure().ToScalar<Int64>();
         }
 
+        public string ToFirstOrDefaultScalar() {
+            return ExecuteStoredProcedure().ToFirstOrDefaultScalar<string>();
+        }
+
         public List<Int64> ToScalars() {
             return ExecuteStoredProcedure().ToScalars<Int64>();
         }
